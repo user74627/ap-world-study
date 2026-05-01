@@ -10,6 +10,8 @@ var AP_UNITS = [
     title: "The Global Tapestry",
     dateRange: "c. 1200–1450",
     color: "#7c6fcd",
+    videoId: "xDkPq5KcbS4",
+    channelNote: "Heimler\u2019s History \u2014 AP World Unit 1 Review (Everything You Need to Know)",
     description: "State building, expansion, and decline of major civilizations across Asia, Africa, Europe, and the Americas.",
     topics: [
       { title: "Song Dynasty China", keys: ["song dynasty", "civil service", "neo-confucianism", "foot binding", "merit", "scholar-gentry", "paper money", "champa rice"] },
@@ -48,6 +50,8 @@ var AP_UNITS = [
     title: "Networks of Exchange",
     dateRange: "c. 1200–1450",
     color: "#0ea5e9",
+    videoId: "TPQQnXFsUmU",
+    channelNote: "Heimler\u2019s History \u2014 AP World Unit 2 Review (Everything You Need to Know)",
     description: "How the Silk Roads, Indian Ocean, and trans-Saharan trade networks linked civilizations and spread goods, ideas, and disease.",
     topics: [
       { title: "The Silk Roads", keys: ["silk road", "overland trade", "caravanserai", "luxury goods", "technology transfer", "central asia"] },
@@ -83,6 +87,8 @@ var AP_UNITS = [
     title: "Land-Based Empires",
     dateRange: "c. 1450–1750",
     color: "#f59e0b",
+    videoId: "dOdU3J39mFk",
+    channelNote: "Heimler\u2019s History \u2014 AP World Unit 3 Review (Everything You Need to Know)",
     description: "The rise of gunpowder empires — Ottoman, Safavid, Mughal, Ming, Qing, Russian — and their methods of political and religious control.",
     topics: [
       { title: "Ottoman Empire", keys: ["ottoman", "mehmed", "suleiman", "devshirme", "janissaries", "constantinople 1453", "millet system", "topkapi"] },
@@ -120,6 +126,8 @@ var AP_UNITS = [
     title: "Transoceanic Interconnections",
     dateRange: "c. 1450–1750",
     color: "#10b981",
+    videoId: "JnmHOBcILmg",
+    channelNote: "Heimler\u2019s History \u2014 AP World Unit 4 Review (Everything You Need to Know)",
     description: "European exploration, colonization of the Americas, the Columbian Exchange, the Atlantic slave trade, and global silver flows.",
     topics: [
       { title: "Causes of European Exploration", keys: ["european exploration", "gold glory god", "renaissance", "ottoman blocked trade", "technology navigation", "prince henry", "reconquista"] },
@@ -159,6 +167,8 @@ var AP_UNITS = [
     title: "Revolutions",
     dateRange: "c. 1750–1900",
     color: "#ef4444",
+    videoId: "zpZ1NvRJjGc",
+    channelNote: "Antisocial Studies (Emily Glankler) \u2014 AP World History 1750\u20131900 Full Review (Units 5 & 6)",
     description: "Enlightenment ideas, political revolutions (American, French, Haitian, Latin American), the Industrial Revolution, and new ideologies.",
     topics: [
       { title: "The Enlightenment", keys: ["enlightenment", "locke", "rousseau", "voltaire", "montesquieu", "natural rights", "social contract", "reason", "philosophe"] },
@@ -198,6 +208,8 @@ var AP_UNITS = [
     title: "Consequences of Industrialization",
     dateRange: "c. 1750–1900",
     color: "#8b5cf6",
+    videoId: "r06Dub-CmD8",
+    channelNote: "Heimler\u2019s History \u2014 How Imperial States Expanded 1750\u20131900 (Unit 6, Topic 2) \u2014 also see the full Unit 6 playlist",
     description: "How industrialization drove imperialism in Africa, Asia, and Latin America, and how colonized peoples resisted.",
     topics: [
       { title: "Industrialization & the Environment", keys: ["deforestation", "pollution", "resource extraction", "coal mining", "environmental damage", "industrial environment"] },
@@ -235,6 +247,8 @@ var AP_UNITS = [
     title: "Global Conflict",
     dateRange: "c. 1900–present",
     color: "#f97316",
+    videoId: "TjibjCUpvMM",
+    channelNote: "Seth Gergis \u2014 AP World History Modern Unit 7 Review (Global Conflict)",
     description: "The causes and consequences of World War I, the interwar period, the rise of totalitarianism, and World War II.",
     topics: [
       { title: "Causes of World War I (MAIN)", keys: ["world war 1", "wwi causes", "main", "militarism", "alliance system", "imperialism", "nationalism", "archduke franz ferdinand", "assassination", "triple entente", "triple alliance"] },
@@ -274,6 +288,8 @@ var AP_UNITS = [
     title: "Cold War & Decolonization",
     dateRange: "c. 1900–present",
     color: "#06b6d4",
+    videoId: "vL0TWrzFLvw",
+    channelNote: "Stephanie Gorges \u2014 AP World History Modern Unit 8 Review (Cold War & Decolonization)",
     description: "The Cold War between the US and USSR, proxy conflicts, the decolonization of Asia and Africa, and the Non-Aligned Movement.",
     topics: [
       { title: "Origins of the Cold War", keys: ["cold war origins", "truman doctrine", "containment", "marshall plan", "berlin airlift", "iron curtain", "nato", "warsaw pact", "us ussr conflict"] },
@@ -313,6 +329,8 @@ var AP_UNITS = [
     title: "Globalization",
     dateRange: "c. 1900–present",
     color: "#84cc16",
+    videoId: "DQ6eIl7bez0",
+    channelNote: "Heimler\u2019s History \u2014 Globalization & Calls for Reform (Unit 9, Topic 5) \u2014 also see the full Unit 9 playlist",
     description: "Economic and cultural globalization, technology, environmental challenges, social movements, and global inequality.",
     topics: [
       { title: "Economic Globalization & International Institutions", keys: ["wto", "imf", "world bank", "free trade", "globalization economy", "multinational corporation", "nafta", "trade agreement", "structural adjustment"] },
