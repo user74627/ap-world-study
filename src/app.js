@@ -190,6 +190,22 @@
       return '<span class="topic-chip">' + escapeHtml(t.title) + '</span>';
     }).join('');
 
+    var videoHtml = unit.videoId ? [
+      '<div class="video-section">',
+      '<div class="video-section-label">&#9654;&nbsp; Watch the Review Video</div>',
+      '<div class="video-wrap">',
+      '<iframe src="https://www.youtube.com/embed/' + unit.videoId + '"',
+      ' title="' + escapeHtml(unit.channelNote || 'Unit ' + unit.id + ' Review') + '"',
+      ' frameborder="0"',
+      ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"',
+      ' allowfullscreen></iframe>',
+      '</div>',
+      '<div class="video-channel-note">',
+      '&#128250;&nbsp;' + escapeHtml(unit.channelNote || ''),
+      '</div>',
+      '</div>'
+    ].join('') : '';
+
     return [
       '<button class="btn btn-secondary btn-sm" style="margin-bottom:18px" data-goto="dashboard">&#8592; Dashboard</button>',
 
@@ -205,15 +221,22 @@
       '<div class="topics-chips">' + topicsChips + '</div>',
       '</div>',
 
-      /* Step 1 — Transcript */
+      /* Video embed */
+      videoHtml,
+
+      /* Step 1 — Transcript (pre-filled) */
       '<div class="step-card">',
       '<div class="step-header">',
       '<div class="step-num">1</div>',
-      '<div class="step-title">Paste YouTube Transcript <em style="font-weight:400;color:var(--text-3)">(optional but recommended)</em></div>',
+      '<div class="step-title">Review Transcript',
+      unit.videoId
+        ? ' <em style="font-weight:400;color:var(--success);font-size:13px">&#10003; Pre-loaded from the video above</em>'
+        : ' <em style="font-weight:400;color:var(--text-3);font-size:13px">(paste a transcript for richer analysis)</em>',
+      '</div>',
       '</div>',
       '<div class="step-body">',
       '<textarea id="transcript-input" class="field transcript-field"',
-      ' placeholder="Paste the full video transcript here. In YouTube: click \'...\' under the video → \'Show transcript\' → copy all text."></textarea>',
+      ' placeholder="Transcript auto-loads here. You can also paste your own."></textarea>',
       '</div></div>',
 
       /* Step 2 — Notes */
@@ -221,11 +244,11 @@
       '<div class="step-header">',
       '<div class="step-num">2</div>',
       '<div class="step-title">Write Everything You Remember</div>',
-      '<span class="step-hint">Don\'t look at notes — write from memory</span>',
+      '<span class="step-hint">After watching, write from memory — no peeking!</span>',
       '</div>',
       '<div class="step-body">',
       '<textarea id="notes-input" class="field notes-field"',
-      ' placeholder="Write everything you can recall about ' + escapeHtml(unit.title) + ' here.\n\nInclude key events, people, terms, causes, effects, dates, comparisons — anything you remember. The more detailed, the better your gap analysis will be."></textarea>',
+      ' placeholder="Write everything you can recall about ' + escapeHtml(unit.title) + ' here.\n\nInclude key events, people, terms, causes, effects, dates, comparisons — anything you remember. The more detail you write, the better the gap analysis."></textarea>',
       '</div></div>',
 
       /* Analyze bar */
@@ -524,12 +547,16 @@
     content.innerHTML = html;
     renderSidebar();
 
-    /* Restore textarea content after re-render */
+    /* Restore textarea content after re-render, or auto-fill from unit transcript */
     if (State.page === 'study') {
-      var ti = el('transcript-input');
-      var ni = el('notes-input');
-      if (ti && State.savedTranscript) ti.value = State.savedTranscript;
-      if (ni && State.savedNotes)     ni.value = State.savedNotes;
+      var ti   = el('transcript-input');
+      var ni   = el('notes-input');
+      var unit = AP_UNITS.find(function (u) { return u.id === State.unitId; });
+      var defaultTranscript = (typeof UNIT_TRANSCRIPTS !== 'undefined' && unit)
+        ? (UNIT_TRANSCRIPTS[unit.id] || '')
+        : '';
+      if (ti) ti.value = State.savedTranscript || defaultTranscript;
+      if (ni && State.savedNotes) ni.value = State.savedNotes;
     }
 
     /* Set up the file-input change listener (cannot be delegated) */
