@@ -117,6 +117,7 @@ var StudyStorage = (function () {
     getSettings: function () {
       return _read(SETTINGS_KEY, {
         examDate: '',
+        theme: 'dark-default',
         aiProvider: 'browser', // 'browser' | 'gemini' (future)
         geminiApiKey: ''
       });
