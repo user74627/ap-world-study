@@ -54,6 +54,94 @@
     return null;
   }
 
+  var THEME_PRESETS = {
+    'dark-default': {
+      '--bg': '#0d1117',
+      '--bg-1': '#161b22',
+      '--bg-2': '#1f2937',
+      '--bg-3': '#273044',
+      '--border': '#30363d',
+      '--border-light': '#3d4451',
+      '--text-1': '#e6edf3',
+      '--text-2': '#8b949e',
+      '--text-3': '#484f58',
+      '--accent': '#7c6fcd',
+      '--accent-2': '#6366f1',
+      '--accent-dim': 'rgba(124, 111, 205, 0.15)'
+    },
+    'dark-blue-soft': {
+      '--bg': '#0f141e',
+      '--bg-1': '#182234',
+      '--bg-2': '#223149',
+      '--bg-3': '#2a3c59',
+      '--border': '#2f405c',
+      '--border-light': '#3a4f70',
+      '--text-1': '#e8edf5',
+      '--text-2': '#aeb8c6',
+      '--text-3': '#7f8ea1',
+      '--accent': '#77a8ff',
+      '--accent-2': '#5f95f5',
+      '--accent-dim': 'rgba(119, 168, 255, 0.2)'
+    },
+    'forest-calm': {
+      '--bg': '#101713',
+      '--bg-1': '#17221c',
+      '--bg-2': '#223229',
+      '--bg-3': '#2a3e34',
+      '--border': '#32463c',
+      '--border-light': '#3f594b',
+      '--text-1': '#e7efe9',
+      '--text-2': '#adc1b2',
+      '--text-3': '#7f9588',
+      '--accent': '#76c893',
+      '--accent-2': '#52b788',
+      '--accent-dim': 'rgba(118, 200, 147, 0.2)'
+    },
+    'warm-sepia': {
+      '--bg': '#16120f',
+      '--bg-1': '#201a15',
+      '--bg-2': '#2b241d',
+      '--bg-3': '#382f25',
+      '--border': '#453a2f',
+      '--border-light': '#5a4c3d',
+      '--text-1': '#f2e8dc',
+      '--text-2': '#ccbba5',
+      '--text-3': '#9d8d79',
+      '--accent': '#d8a657',
+      '--accent-2': '#c78f3f',
+      '--accent-dim': 'rgba(216, 166, 87, 0.2)'
+    },
+    'light-high-readability': {
+      '--bg': '#f5f7fb',
+      '--bg-1': '#ffffff',
+      '--bg-2': '#eef2f8',
+      '--bg-3': '#dfe7f2',
+      '--border': '#d3dce8',
+      '--border-light': '#bcc9da',
+      '--text-1': '#17202d',
+      '--text-2': '#3a4960',
+      '--text-3': '#617087',
+      '--accent': '#4f7cff',
+      '--accent-2': '#3f6df0',
+      '--accent-dim': 'rgba(79, 124, 255, 0.15)',
+      '--success': '#1a7f37',
+      '--success-dim': 'rgba(26, 127, 55, 0.15)',
+      '--warning': '#9a6700',
+      '--warning-dim': 'rgba(154, 103, 0, 0.15)',
+      '--danger': '#b42318',
+      '--danger-dim': 'rgba(180, 35, 24, 0.14)',
+      '--info': '#0969da',
+      '--info-dim': 'rgba(9, 105, 218, 0.14)'
+    }
+  };
+
+  function applyTheme(themeName) {
+    var theme = THEME_PRESETS[themeName] || THEME_PRESETS['dark-default'];
+    Object.keys(theme).forEach(function (varName) {
+      document.documentElement.style.setProperty(varName, theme[varName]);
+    });
+  }
+
   /* ── App State ───────────────────────────────────────────── */
 
   var State = {
@@ -490,6 +578,16 @@
       '<div class="settings-label">Exam Date <span>Used for the countdown on the dashboard</span></div>',
       '<input type="date" id="exam-date-input" class="field-input" value="' + escapeHtml(settings.examDate || '') + '">',
       '</div>',
+      '<div class="settings-row">',
+      '<div class="settings-label">Color Theme <span>Pick a palette that is easiest on your eyes</span></div>',
+      '<select id="theme-select" class="field-input">',
+      '<option value="dark-default"' + (settings.theme === 'dark-default' ? ' selected' : '') + '>Dark Default (purple accent)</option>',
+      '<option value="dark-blue-soft"' + (settings.theme === 'dark-blue-soft' ? ' selected' : '') + '>Dark Blue Soft</option>',
+      '<option value="forest-calm"' + (settings.theme === 'forest-calm' ? ' selected' : '') + '>Forest Calm</option>',
+      '<option value="warm-sepia"' + (settings.theme === 'warm-sepia' ? ' selected' : '') + '>Warm Sepia</option>',
+      '<option value="light-high-readability"' + (settings.theme === 'light-high-readability' ? ' selected' : '') + '>Light High Readability</option>',
+      '</select>',
+      '</div>',
       '<div><button class="btn btn-primary btn-sm" id="save-settings-btn">Save Preferences</button></div>',
       '</div></div>',
 
@@ -616,8 +714,11 @@
   function handleSaveSettings() {
     var settings = StudyStorage.getSettings();
     var dateInput = el('exam-date-input');
+    var themeInput = el('theme-select');
     if (dateInput) settings.examDate = dateInput.value;
+    if (themeInput) settings.theme = themeInput.value;
     StudyStorage.saveSettings(settings);
+    applyTheme(settings.theme);
     var msg = el('settings-msg');
     if (msg) {
       msg.innerHTML = '<div class="alert alert-success">Settings saved!</div>';
@@ -728,6 +829,8 @@
   /* ── Init ────────────────────────────────────────────────── */
 
   document.addEventListener('DOMContentLoaded', function () {
+    var initialSettings = StudyStorage.getSettings();
+    applyTheme(initialSettings.theme || 'dark-default');
     initEvents();
     navigate('dashboard');
   });
