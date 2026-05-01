@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP World History — Study Tool</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🌍</div>
+        <div class="brand-text">
+          <div class="brand-name">AP World</div>
+          <div class="brand-sub">History Study</div>
+        </div>
+      </div>
+
+      <nav class="nav-section">
+        <button class="nav-btn" data-page="dashboard">
+          <span class="nav-icon">&#9632;</span>
+          Dashboard
+        </button>
+        <button class="nav-btn" data-page="review">
+          <span class="nav-icon">&#9672;</span>
+          Review Gaps
+        </button>
+        <button class="nav-btn" data-page="settings">
+          <span class="nav-icon">&#9881;</span>
+          Settings
+        </button>
+      </nav>
+
+      <div class="nav-divider">Units</div>
+
+      <nav id="unit-nav" class="nav-section unit-nav"></nav>
+    </aside>
+
+    <main id="main">
+      <div id="content">
+        <div class="loading">Loading...</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="src/data/apWorldUnits.js"></script>
+  <script src="src/storage/studyStorage.js"></script>
+  <script src="src/analyzers/browserGapAnalyzer.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
