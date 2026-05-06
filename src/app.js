@@ -706,12 +706,18 @@
     if (!content) return;
 
     var html;
-    switch (State.page) {
-      case 'study':    html = viewStudy(State.unitId);  break;
-      case 'review':   html = viewReview();              break;
-      case 'settings': html = viewSettings();            break;
-      case 'timeline': html = viewTimeline();            break;
-      default:         html = viewDashboard();
+    try {
+      switch (State.page) {
+        case 'study':    html = viewStudy(State.unitId);  break;
+        case 'review':   html = viewReview();              break;
+        case 'settings': html = viewSettings();            break;
+        case 'timeline': html = viewTimeline();            break;
+        default:         html = viewDashboard();
+      }
+    } catch (err) {
+      html = '<div class="page-header"><div class="page-title">Something went wrong</div></div>' +
+        '<div class="alert" style="background:var(--danger-dim);border-color:var(--danger);color:var(--danger)">' +
+        'Error on page <strong>' + State.page + '</strong>: ' + escapeHtml(String(err)) + '</div>';
     }
 
     content.innerHTML = html;
