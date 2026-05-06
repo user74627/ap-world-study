@@ -488,6 +488,77 @@
     ].join('');
   }
 
+  /* ── Timeline View ───────────────────────────────────────── */
+
+  function viewTimeline() {
+    var eraHtml = TIMELINE_ERAS.map(function (era) {
+      var units = era.unitIds.map(function (uid) {
+        return AP_UNITS.find(function (u) { return u.id === uid; });
+      }).filter(Boolean);
+
+      var eraEvents = TIMELINE_EVENTS.filter(function (ev) {
+        return era.unitIds.indexOf(ev.unitId) !== -1;
+      }).sort(function (a, b) { return a.year - b.year; });
+
+      var unitPills = units.map(function (u) {
+        return [
+          '<button class="tl-unit-pill" data-page="study" data-unit="' + u.id + '">',
+          '<span class="tl-unit-dot" style="background:' + u.color + '"></span>',
+          'Unit ' + u.id + '\u00a0\u2014\u00a0' + escapeHtml(u.title),
+          '</button>'
+        ].join('');
+      }).join('');
+
+      var eventsHtml = eraEvents.map(function (ev) {
+        var ledToHtml = (ev.ledTo || []).map(function (l) {
+          return '<div class="tl-led-to-item">' + escapeHtml(l) + '</div>';
+        }).join('');
+
+        return [
+          '<div class="tl-event" data-tl-event="' + escapeHtml(ev.id) + '">',
+          '<div class="tl-year">' + escapeHtml(ev.yearLabel || String(ev.year)) + '</div>',
+          '<div class="tl-event-head">',
+          '<div class="tl-event-title">' + escapeHtml(ev.title) + '</div>',
+          '<div class="tl-region-tag">' + escapeHtml(ev.region) + '</div>',
+          '</div>',
+          '<div class="tl-event-preview">' + escapeHtml(ev.description) + '</div>',
+          '<div class="tl-expand-hint">Click to expand \u2192</div>',
+          '<div class="tl-event-body">',
+          '<div class="tl-event-desc">' + escapeHtml(ev.description) + '</div>',
+          ledToHtml ? [
+            '<div class="tl-led-to-label">Led to</div>',
+            '<div class="tl-led-to-list">' + ledToHtml + '</div>'
+          ].join('') : '',
+          '</div>',
+          '</div>'
+        ].join('');
+      }).join('');
+
+      return [
+        '<div class="tl-era">',
+        '<div class="tl-era-header">',
+        '<div class="tl-era-label">' + escapeHtml(era.label) + '</div>',
+        '<div class="tl-era-units">' + unitPills + '</div>',
+        '<div class="tl-era-event-count">' + eraEvents.length + ' events</div>',
+        '</div>',
+        '<div class="tl-rail">' + eventsHtml + '</div>',
+        '</div>'
+      ].join('');
+    }).join('');
+
+    return [
+      '<div class="page-header">',
+      '<div class="page-title">World History Timeline</div>',
+      '<div class="page-subtitle">All 9 units across 4 eras \u2014 key events, dates, and what they led to.</div>',
+      '</div>',
+      '<div class="timeline-intro">',
+      '<strong>How to use:</strong> Click any event to expand it and see what it led to on the global scale. ',
+      'Click a unit pill to jump to that unit\'s study page.',
+      '</div>',
+      eraHtml
+    ].join('');
+  }
+
   /* ── Review View ─────────────────────────────────────────── */
 
   function viewReview() {
@@ -639,6 +710,7 @@
       case 'study':    html = viewStudy(State.unitId);  break;
       case 'review':   html = viewReview();              break;
       case 'settings': html = viewSettings();            break;
+      case 'timeline': html = viewTimeline();            break;
       default:         html = viewDashboard();
     }
 
@@ -806,6 +878,17 @@
           var tog = sessionHeader.querySelector('.session-toggle');
           if (tog) tog.innerHTML = body.classList.contains('hidden') ? '&#9660;' : '&#9650;';
         }
+        return;
+      }
+
+      /* Timeline unit pills — navigate to study page */
+      var tlUnitPill = closest(e.target, '.tl-unit-pill[data-unit]');
+      if (tlUnitPill) { navigate('study', parseInt(tlUnitPill.dataset.unit, 10)); return; }
+
+      /* Timeline event card expand/collapse */
+      var tlEvent = closest(e.target, '[data-tl-event]');
+      if (tlEvent) {
+        tlEvent.classList.toggle('tl-expanded');
         return;
       }
 
