@@ -497,7 +497,8 @@
       }).filter(Boolean);
 
       var eraEvents = TIMELINE_EVENTS.filter(function (ev) {
-        return era.unitIds.indexOf(ev.unitId) !== -1;
+        var y = ev.year;
+        return y >= era.startYear && y <= era.endYear;
       }).sort(function (a, b) { return a.year - b.year; });
 
       var unitPills = units.map(function (u) {
@@ -513,12 +514,15 @@
         var ledToHtml = (ev.ledTo || []).map(function (l) {
           return '<div class="tl-led-to-item">' + escapeHtml(l) + '</div>';
         }).join('');
+        var examBadge = ev.examHighlight
+          ? '<span class="tl-exam-badge" title="Often emphasized on the AP exam">Exam focus</span>'
+          : '';
 
         return [
-          '<div class="tl-event" data-tl-event="' + escapeHtml(ev.id) + '">',
+          '<div class="tl-event' + (ev.examHighlight ? ' tl-exam-highlight' : '') + '" data-tl-event="' + escapeHtml(ev.id) + '">',
           '<div class="tl-year">' + escapeHtml(ev.yearLabel || String(ev.year)) + '</div>',
           '<div class="tl-event-head">',
-          '<div class="tl-event-title">' + escapeHtml(ev.title) + '</div>',
+          '<div class="tl-event-title">' + escapeHtml(ev.title) + examBadge + '</div>',
           '<div class="tl-region-tag">' + escapeHtml(ev.region) + '</div>',
           '</div>',
           '<div class="tl-event-preview">' + escapeHtml(ev.description) + '</div>',
@@ -548,12 +552,13 @@
 
     return [
       '<div class="page-header">',
-      '<div class="page-title">World History Timeline</div>',
-      '<div class="page-subtitle">All 9 units across 4 eras \u2014 key events, dates, and what they led to.</div>',
+      '<div class="page-title">AP World Timeline</div>',
+      '<div class="page-subtitle">Four periods \u2014 context and cause-and-effect matter more than memorizing exact dates.</div>',
       '</div>',
       '<div class="timeline-intro">',
-      '<strong>How to use:</strong> Click any event to expand it and see what it led to on the global scale. ',
-      'Click a unit pill to jump to that unit\'s study page.',
+      '<strong>Remember:</strong> You do not need to memorize every date. Know the basics of each event and how one development led to the next. ',
+      'Events marked <span class="tl-exam-badge tl-exam-badge-inline">Exam focus</span> are tested often. ',
+      'Click any card to expand \u201cLed to.\u201d Use unit pills to open matching study pages.',
       '</div>',
       eraHtml
     ].join('');
