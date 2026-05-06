@@ -1,422 +1,635 @@
 /* ================================================================
-   AP World History — Timeline Events Data
-   ~50 key events across all 4 eras with cause-effect connections.
-   Each event belongs to one unit; eras group multiple units.
+   AP World History — Timeline (study-note style)
+   Period bands match common classroom timelines (700–1450 … 1900–present).
+   Events use a sort year (ranges shown in yearLabel). examHighlight flags
+   topics often stressed on the exam — prioritize context & causation.
 ================================================================ */
 
 var TIMELINE_ERAS = [
   {
     id: 'era-1',
-    label: 'c. 1200\u20131450',
+    label: 'Period One: 700\u20131450',
     unitIds: [1, 2],
-    startYear: 1200,
-    endYear: 1450
+    startYear: 700,
+    endYear: 1449
   },
   {
     id: 'era-2',
-    label: 'c. 1450\u20131750',
+    label: 'Period Two: 1450\u20131750',
     unitIds: [3, 4],
     startYear: 1450,
-    endYear: 1750
+    endYear: 1749
   },
   {
     id: 'era-3',
-    label: 'c. 1750\u20131900',
+    label: 'Period Three: 1750\u20131900',
     unitIds: [5, 6],
     startYear: 1750,
-    endYear: 1900
+    endYear: 1899
   },
   {
     id: 'era-4',
-    label: 'c. 1900\u2013present',
+    label: 'Period Four: 1900\u2013present',
     unitIds: [7, 8, 9],
     startYear: 1900,
-    endYear: 2025
+    endYear: 2035
   }
 ];
 
 var TIMELINE_EVENTS = [
-
-  /* ── ERA 1: c. 1200–1450 (Units 1 & 2) ─────────────────── */
-
+  {
+    id: 'abbasid-caliphate',
+    year: 750,
+    yearLabel: '750\u20131258',
+    title: 'Abbasid Caliphate',
+    region: 'Dar al-Islam',
+    unitId: 1,
+    examHighlight: true,
+    description: 'Islamic empire centered on Baghdad (modern Iraq), anchored by commerce with receipts and bills of exchange. Core setting for many developments in Dar al-Islam.',
+    ledTo: ['Science, law, and trade hubs tied Afro-Eurasia together', 'Later fragmentation helped Turkic Muslim empires (e.g., Seljuks) rise']
+  },
   {
     id: 'song-dynasty',
-    year: 1127,
-    yearLabel: 'c. 1127',
-    title: 'Song Dynasty (Southern Song)',
+    year: 960,
+    yearLabel: '960\u20131279',
+    title: 'Song Dynasty',
     region: 'East Asia',
     unitId: 1,
-    description: 'The Southern Song Dynasty continued in China after northern conquest, producing remarkable innovations: civil service exams based on Neo-Confucianism selected merit-based scholar-gentry, paper money was issued, and champa rice from Vietnam doubled agricultural yields.',
-    ledTo: [
-      'Civil service examination model spread to neighboring states',
-      'Agricultural surplus supported population growth and urbanization',
-      'Chinese innovations (gunpowder, compass, printing) diffused along trade routes'
-    ]
+    examHighlight: true,
+    description: 'Neo-Confucianism stressed hierarchy and filial piety (honoring parents and ancestors; daughters-in-law ranked lowest in household ethics). Women faced legal limits and practices such as foot binding. Merit exams expanded bureaucracy; Champa rice, Canal shipping, and trade fueled growth.',
+    ledTo: ['Merit bureaucracy became a model across East Asia', 'Commercial revolution intensified ties to Indian Ocean and steppe trade']
   },
   {
-    id: 'mongol-rise',
+    id: 'crusades',
+    year: 1095,
+    yearLabel: '1095\u20131291',
+    title: 'Crusades',
+    region: 'Europe / Mediterranean',
+    unitId: 1,
+    examHighlight: false,
+    description: 'Latin Christian military campaigns aimed at controlling sacred sites and expanding Catholic influence against Muslims and others.',
+    ledTo: ['Deepened mutual hostility and crusading ideology in Latin Europe', 'Exposed Europeans to eastern goods, accelerating luxury demand']
+  },
+  {
+    id: 'delhi-sultanate',
     year: 1206,
-    yearLabel: '1206',
-    title: 'Mongol Empire Founded',
+    yearLabel: '1206\u20131526',
+    title: 'Delhi Sultanate',
+    region: 'South Asia',
+    unitId: 1,
+    examHighlight: false,
+    description: 'Turko-Afghan Muslim polity in north India; linked to wider diffusion of Islam toward maritime Southeast Asia. Rajput states often resisted, sustaining Hindu political traditions.',
+    ledTo: ['New mosque-elite networks reshaped North Indian cities', 'Foreshadowed Mughal blends of Persianate administration with Indic society']
+  },
+  {
+    id: 'genghis-khan',
+    year: 1206,
+    yearLabel: '1206\u20131227',
+    title: 'Genghis Khan unifies Mongols',
     region: 'Central Asia',
     unitId: 1,
-    description: 'Genghis Khan united the steppe nomad tribes and launched a campaign of conquest that would create the largest contiguous land empire in history, stretching from the Pacific to Eastern Europe.',
-    ledTo: [
-      'Pax Mongolica secured Silk Road trade for a century',
-      'Conquest disrupted and then reconnected Eurasian trade networks',
-      'Facilitated spread of the Black Death along trade routes'
-    ]
+    examHighlight: false,
+    description: 'Temujin titled universal ruler in 1206; disciplined cavalry and spy networks shattered walled states from China to Khwarazm.',
+    ledTo: ['Conquests killed millions yet stitched Eurasia under Mongol law', 'Set stage for Pax Mongolica and faster circulation of goods, faiths, and plague']
   },
   {
-    id: 'mali-empire',
-    year: 1235,
-    yearLabel: 'c. 1235',
-    title: 'Mali Empire Rises Under Sundiata',
-    region: 'West Africa',
+    id: 'mongols-diffusers',
+    year: 1215,
+    yearLabel: 'c. 1215',
+    title: 'Mongols as empire-builders',
+    region: 'Eurasia',
+    unitId: 2,
+    examHighlight: false,
+    description: 'Highly mobile armies fused Turco-Mongol elites with local collaborators; tribute flows redirected toward steppe courts.',
+    ledTo: ['Russian principalities long paid Mongol tribute (the “Mongol yoke”)', 'Silk Roads traffic surged under Mongol peace—then carried plague westward']
+  },
+  {
+    id: 'magna-carta',
+    year: 1215,
+    yearLabel: '1215',
+    title: 'Magna Carta',
+    region: 'England',
     unitId: 1,
-    description: 'Sundiata Keita founded the Mali Empire, which controlled the lucrative trans-Saharan gold-salt trade. Mali grew into one of the wealthiest states in the medieval world, centered on Timbuktu as a hub of Islamic scholarship.',
-    ledTo: [
-      'Timbuktu became a major center of Islamic learning',
-      'West African gold funded Mediterranean and Indian Ocean commerce',
-      'Mansa Musa\'s later pilgrimage displayed African wealth to the world'
-    ]
+    examHighlight: false,
+    description: 'Feudal charter curbing arbitrary arrest/taxation of barons—symbolic ancestor of limited monarchy, not democracy.',
+    ledTo: ['Later cited in English constitutional clashes', 'Showed feudal aristocrats could bargain with kings']
   },
   {
     id: 'mongols-baghdad',
     year: 1258,
     yearLabel: '1258',
-    title: 'Mongols Sack Baghdad',
+    title: 'Mongols destroy Baghdad',
     region: 'Middle East',
-    unitId: 1,
-    description: 'Hulagu Khan\'s Mongol army destroyed the Abbasid Caliphate, killing the caliph and burning the great libraries of Baghdad — an event often called the end of the Islamic Golden Age. The Tigris River reportedly ran black with ink from destroyed books.',
-    ledTo: [
-      'Permanent end of the Abbasid Caliphate',
-      'Shift of Islamic cultural center to Cairo and Anatolia',
-      'Opened path for Mongol control of Persian and Iraqi trade'
-    ]
+    unitId: 2,
+    examHighlight: true,
+    description: 'Hulagu’s sack ended the Abbasid caliphate’s political unity; libraries burned and irrigation suffered.',
+    ledTo: ['Cairo and Anatolian courts absorbed Islamic prestige', 'Persian successor regimes (Ilkhanate, later Timurids) reworked Mongol governance']
   },
   {
-    id: 'marco-polo',
-    year: 1271,
-    yearLabel: '1271\u20131295',
-    title: 'Marco Polo Travels to China',
-    region: 'Eurasia',
-    unitId: 2,
-    description: 'Venetian merchant Marco Polo traveled across Central Asia to Kublai Khan\'s court in China, spending 17 years in the East. His account, Il Milione, described the wealth of China and Asia to an astonished European audience.',
-    ledTo: [
-      'Inspired European desire for direct access to Asian trade',
-      'Contributed to later motivation for Columbus and da Gama\'s voyages',
-      'Spread knowledge of Chinese innovations to European readers'
-    ]
+    id: 'yuan-dynasty',
+    year: 1279,
+    yearLabel: '1279\u20131368',
+    title: 'Yuan Dynasty',
+    region: 'East Asia',
+    unitId: 3,
+    examHighlight: false,
+    description: 'First foreign dynasty to rule all China—Mongol khans atop Confucian bureaucracies and allied Han elites.',
+    ledTo: ['Ethnic stratification fueled Red Turban revolts', 'Ming elites framed restoration of Han civic ideals']
+  },
+  {
+    id: 'ottoman-rise',
+    year: 1299,
+    yearLabel: '1299\u20131923',
+    title: 'Ottoman state emerges',
+    region: 'Anatolia / Balkans',
+    unitId: 3,
+    examHighlight: false,
+    description: 'Founded under Osman as Mongol frontier zones stabilized; Islamic dynasty exploiting Byzantine weakness and gunpowder fortresses.',
+    ledTo: ['Expanded toward Constantinople (1453) and Mamluk lands', 'devshirme levy forged janissary corps loyal to the sultan']
   },
   {
     id: 'mansa-musa-hajj',
     year: 1324,
     yearLabel: '1324',
-    title: 'Mansa Musa\'s Pilgrimage to Mecca',
-    region: 'Africa / Middle East',
+    title: 'Mansa Musa’s pilgrimage',
+    region: 'West Africa / Hijaz',
     unitId: 2,
-    description: 'Mali Emperor Mansa Musa traveled to Mecca with an entourage of 60,000 people and 80 camels loaded with gold, distributing wealth so generously that he caused gold inflation across North Africa and the Middle East for a decade.',
-    ledTo: [
-      'Collapsed gold prices across the Mediterranean for over a decade',
-      'Placed Mali on European maps for the first time',
-      'Attracted Islamic scholars to Timbuktu, expanding education'
-    ]
+    examHighlight: true,
+    description: 'Mali’s emperor famously dispersed gold in Cairo—advertising Sudanic wealth across the Mediterranean.',
+    ledTo: ['Gold glut disrupted Egyptian currency for years', 'European mapmakers began sketching richer interior Africa']
+  },
+  {
+    id: 'tenochtitlan-founded',
+    year: 1325,
+    yearLabel: '1325',
+    title: 'Tenochtitlan founded',
+    region: 'Mesoamerica',
+    unitId: 1,
+    examHighlight: false,
+    description: 'Mexica island capital with chinampa farming, markets, and tribute arteries feeding imperial expansion.',
+    ledTo: ['Mexica legitimized rule via older Mesoamerican genealogies', 'Spanish siege turned island metropolis into colonial Mexico City']
+  },
+  {
+    id: 'ibn-battuta',
+    year: 1325,
+    yearLabel: '1325\u20131354',
+    title: 'Ibn Battuta travels Dar al-Islam',
+    region: 'Afro-Eurasia',
+    unitId: 2,
+    examHighlight: false,
+    description: 'Moroccan scholar exploited caravan and sea lanes tying Muslim cities from Mali to Malacca.',
+    ledTo: ['Travelogue illustrated shared Islamic legal languages', 'Shows integration possible before European oceanic takeoff']
   },
   {
     id: 'black-death',
-    year: 1347,
-    yearLabel: '1347\u20131353',
-    title: 'Black Death Reaches Europe',
-    region: 'Eurasia',
+    year: 1346,
+    yearLabel: '1346\u20131388',
+    title: 'Black Death / Bubonic plague',
+    region: 'Afro-Eurasia',
     unitId: 2,
-    description: 'The bubonic plague, spreading from Central Asia along Mongol trade routes, reached the Mediterranean and swept through Europe, killing an estimated one-third of Europe\'s population. It also devastated the Middle East and reduced Eurasian population by tens of millions.',
-    ledTo: [
-      'Massive demographic collapse weakened feudalism as labor became scarce',
-      'Peasant uprisings across Europe challenged the feudal order',
-      'Survivors demanded higher wages, accelerating social change',
-      'Renewed urgency to find alternative trade routes (avoiding plague-hit overland routes)'
-    ]
+    examHighlight: true,
+    description: 'Pathogens exited Inner Asia along Silk Roads and Indian Ocean circuits—among history’s deadliest pandemics.',
+    ledTo: ['Middle East lost roughly a third of population in hardest-hit zones', 'European labor scarcity weakened serfdom and stirred religious scapegoating']
   },
   {
-    id: 'ming-dynasty',
+    id: 'ming-founded',
     year: 1368,
-    yearLabel: '1368',
-    title: 'Ming Dynasty Founded in China',
+    yearLabel: '1368\u20131644',
+    title: 'Ming Dynasty reunifies China',
     region: 'East Asia',
-    unitId: 1,
-    description: 'Chinese rebels overthrew the Mongol Yuan Dynasty and established the Ming Dynasty, restoring Han Chinese rule. The Ming rebuilt the Great Wall, moved the capital to Beijing, and built the Forbidden City. Early Ming emperors sponsored Zheng He\'s enormous treasure voyages to Southeast Asia, India, and Africa.',
-    ledTo: [
-      'Zheng He\'s voyages (1405\u20131433) projected Chinese power across the Indian Ocean',
-      'Later isolationism limited China\'s engagement with European expansion',
-      'Ming demand for silver drove the global silver trade of the 1500s\u20131600s'
-    ]
+    unitId: 3,
+    examHighlight: false,
+    description: 'Hongwu expelled Yuan remnants; rebuilt Confucian exams, Great Wall sectors, and used firearms on borders.',
+    ledTo: ['Early Ming outward voyages (Zheng He) then inward fiscal pivot', 'Model Qing rulers later adapted']
+  },
+  {
+    id: 'zheng-he',
+    year: 1405,
+    yearLabel: '1405\u20131433',
+    title: 'Zheng He voyages',
+    region: 'Indian Ocean',
+    unitId: 3,
+    examHighlight: false,
+    description: 'Huge fleets projected Ming prestige and enrolled rulers into tributary rituals.',
+    ledTo: ['Demonstrated Ming nautical capacity before treasure fleets halted', 'Spurred polyglot embassies but limited permanent colonies']
   },
   {
     id: 'aztec-empire',
     year: 1428,
-    yearLabel: 'c. 1428',
-    title: 'Aztec Triple Alliance Dominates Mesoamerica',
-    region: 'Americas',
+    yearLabel: '1428\u20131521',
+    title: 'Aztec Empire expands',
+    region: 'Mesoamerica',
     unitId: 1,
-    description: 'The Aztec (Mexica) formed the Triple Alliance with two neighboring city-states, rapidly expanding to dominate central Mexico through a tribute system. Tenochtitlan, built on a lake island with chinampas (floating gardens), became one of the largest cities in the world.',
-    ledTo: [
-      'Tribute system created widespread resentment among subjugated peoples',
-      'That resentment helped Cortés find allies against the Aztecs in 1519',
-      'Agricultural innovation (chinampas) fed a massive urban population'
-    ]
+    examHighlight: false,
+    description: 'Mexica-led alliance extracted tribute and captive warriors for ritual; professional armies enforced hierarchy.',
+    ledTo: ['Subject peoples allied with Cortés during conquest', 'Urban markets impressed Iberians yet horrified them with sacrifice']
   },
-
-  /* ── ERA 2: c. 1450–1750 (Units 3 & 4) ─────────────────── */
-
   {
-    id: 'fall-constantinople',
+    id: 'inca-empire',
+    year: 1438,
+    yearLabel: '1438\u20131533',
+    title: 'Inca imperial consolidation',
+    region: 'Andes',
+    unitId: 1,
+    examHighlight: true,
+    description: 'Roads, terracing, quipu accounting, Quechua lingua franca, and mit’a labor drafts glued diverse highland peoples.',
+    ledTo: ['Labor-tax infrastructure funded redistribution—and Spanish reworked it for mines', 'Fragmentation after Atahuallpa’s capture eased conquest']
+  },
+  {
+    id: 'swahili-flourish',
+    year: 1440,
+    yearLabel: '1440',
+    title: 'Swahili city-state prosperity',
+    region: 'East Africa',
+    unitId: 2,
+    examHighlight: false,
+    description: 'Urban elites blended Bantu languages with Islam while exporting ivory, gold, and slaves across the Indian Ocean.',
+    ledTo: ['Portuguese forts after 1500 disrupted older autonomy patterns', 'Foreshadowed contested coastal zones into the colonial era']
+  },
+  {
+    id: 'printing-press',
+    year: 1440,
+    yearLabel: '1440',
+    title: 'European printing press',
+    region: 'Europe',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Gutenberg-style movable type cheapened books and widened literacy—fuel for Reformation and scientific societies.',
+    ledTo: ['Pamphlet wars spread Protestant critiques of Rome', 'Standard texts accelerated universities and vernacular nationalism']
+  },
+  {
+    id: 'caravel',
+    year: 1445,
+    yearLabel: '1400s',
+    title: 'Caravel Atlantic sailing',
+    region: 'Europe',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Lateen/ square rig combos mastered Atlantic wind belts—key Iberian offshore advantage.',
+    ledTo: ['Made return voyages from Africa and Americas predictable', 'Underpinned Columbus-era crown charters']
+  },
+  {
+    id: 'atlantic-slave-trade',
+    year: 1441,
+    yearLabel: '1441 onward',
+    title: 'Atlantic slave trade escalates',
+    region: 'Atlantic',
+    unitId: 4,
+    examHighlight: true,
+    description: 'Portuguese raids and markets began forcing millions of Africans across the ocean under brutal ship conditions.',
+    ledTo: ['Plantation complexes in Americas depended on racialized slavery', 'Transformed African states—some raided neighbors for captives']
+  },
+  {
+    id: 'constantinople-1453',
     year: 1453,
     yearLabel: '1453',
-    title: 'Fall of Constantinople',
-    region: 'Middle East / Europe',
+    title: 'Ottomans take Constantinople',
+    region: 'Eastern Mediterranean',
     unitId: 3,
-    description: 'Ottoman Sultan Mehmed II used massive cannons to breach Constantinople\'s legendary walls, ending the Byzantine Empire after over a thousand years. The Ottoman Empire now controlled the Eastern Mediterranean and the main overland trade routes to Asia.',
-    ledTo: [
-      'Ottoman control of eastern trade routes raised costs for European merchants',
-      'Incentivized Portugal and Spain to seek sea routes to Asia — directly enabling the Age of Exploration',
-      'Greek scholars fleeing to Italy brought Byzantine learning and fueled the Renaissance'
-    ]
+    examHighlight: true,
+    description: 'Mehmed II’s siege guns breached Theodosian walls; Byzantium ended, Istanbul rose.',
+    ledTo: ['Ottomans dominated Black Sea–Mediterranean choke points', 'Russian tsars later claimed Third Rome legitimacy']
   },
   {
-    id: 'gutenberg-press',
-    year: 1455,
-    yearLabel: 'c. 1455',
-    title: 'Gutenberg\'s Printing Press',
-    region: 'Europe',
+    id: 'russia-mongol-exit',
+    year: 1465,
+    yearLabel: '1450s\u20131480s',
+    title: 'Moscow sheds Mongol tribute',
+    region: 'Eastern Europe',
     unitId: 3,
-    description: 'Johannes Gutenberg\'s movable-type printing press made books dramatically cheaper and faster to produce. Within 50 years, millions of books were printed across Europe, breaking the Church\'s near-monopoly on literacy and information.',
-    ledTo: [
-      'Protestant Reformation — Luther\'s 95 Theses spread across Europe in weeks',
-      'Scientific Revolution — scientists could share findings rapidly',
-      'Literacy spread to the middle class, fueling Enlightenment ideas'
-    ]
+    examHighlight: false,
+    description: 'Fragmenting Golden Horde let Muscovite princes centralize boyars and Orthodox ideology.',
+    ledTo: ['Ivan III styled Moscow as Rome’s heir', 'Expansion eastward toward Kazan/Siberia followed']
   },
   {
-    id: 'portuguese-exploration',
-    year: 1488,
-    yearLabel: '1488\u20131498',
-    title: 'Portuguese Round Africa, Reach India',
-    region: 'Africa / Indian Ocean',
+    id: 'songhai',
+    year: 1464,
+    yearLabel: '1464\u20131591',
+    title: 'Songhai Empire thrives',
+    region: 'West Africa',
     unitId: 4,
-    description: 'Bartolomeu Dias rounded the Cape of Good Hope in 1488; Vasco da Gama reached India in 1498. Portugal established a network of fortified trading posts (feitoria) around the Indian Ocean, using superior naval artillery to dominate trade routes.',
-    ledTo: [
-      'Portugal broke the Arab and Venetian monopoly on spice trade',
-      'Indian Ocean trade was now open to European ships',
-      'Established the model of trading post empire adopted by later European powers'
-    ]
+    examHighlight: false,
+    description: 'Sudanic Islamic state tying Sahara salt–gold flows through Gao and Timbuktu scholars.',
+    ledTo: ['Moroccan invasion (1591) with firearms ended imperial unity', 'Scholar networks influenced later Sahel polities']
+  },
+  {
+    id: 'sikhism',
+    year: 1469,
+    yearLabel: '1469',
+    title: 'Sikh tradition begins',
+    region: 'South Asia',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Guru Nanak braided Hindu bhakti devotion with critiques drawn from Islamic contexts.',
+    ledTo: ['Khalsa later militarized amid Mughal pressures', 'Community identity shaped modern Punjab politics']
+  },
+  {
+    id: 'reconquista',
+    year: 1491,
+    yearLabel: '1491',
+    title: 'Spanish Reconquista completes',
+    region: 'Iberia',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Catholic monarchs seized Granada—Christian supremacy law tightened against Muslims and Jews.',
+    ledTo: ['Crusading ethos redirected overseas', 'Columbian voyage financed partly through united crowns']
   },
   {
     id: 'columbus-1492',
     year: 1492,
     yearLabel: '1492',
-    title: 'Columbus Reaches the Americas',
-    region: 'Americas',
+    title: 'Columbus reaches Americas',
+    region: 'Atlantic',
     unitId: 4,
-    description: 'Christopher Columbus, funded by Spain, reached the Caribbean believing it was Asia. His voyages opened the Americas to sustained European contact, beginning one of the most consequential connections in human history — and one of its greatest catastrophes for indigenous peoples.',
-    ledTo: [
-      'The Columbian Exchange transformed diets, agriculture, and population on both hemispheres',
-      'Spanish colonization and conquest of Aztec and Inca empires',
-      'Devastating epidemic disease killed an estimated 50\u201390% of indigenous Americans',
-      'Atlantic slave trade emerged to replace lost indigenous labor'
-    ]
+    examHighlight: true,
+    description: 'Spanish expedition inaugurated sustained contact—Columbian Exchange reshaped diets, demographics, and disease regimes.',
+    ledTo: ['Silver flows through Manila–Acapulco tied worlds', 'Indigenous demographic collapse opened land for coerced labor systems']
   },
   {
-    id: 'columbian-exchange',
-    year: 1500,
-    yearLabel: 'c. 1500s',
-    title: 'The Columbian Exchange Transforms the World',
-    region: 'Global',
+    id: 'portugal-americas',
+    year: 1497,
+    yearLabel: '1497',
+    title: 'Portugal pushes Atlantic plantations',
+    region: 'Atlantic / Americas',
     unitId: 4,
-    description: 'The transfer of plants, animals, and diseases between the Eastern and Western Hemispheres fundamentally changed both. American crops (potatoes, maize, tomatoes) spread globally and supported population growth in Europe and Asia; European diseases (smallpox, measles) caused catastrophic indigenous demographic collapse.',
-    ledTo: [
-      'Potato and maize supported population booms in Europe, Africa, and China',
-      'Indigenous population collapse created labor shortage, driving Atlantic slave trade',
-      'Horses transformed life and warfare on the North American plains',
-      'Sugar plantation economy in the Caribbean depended on enslaved African labor'
-    ]
+    examHighlight: false,
+    description: 'Portuguese crown backed islands/Brazil littoral enterprise parallel to Castilian claims.',
+    ledTo: ['Sugar frontier pioneered Atlantic slavery scales', 'Treaty of Tordesillas shaped Iberian spheres']
+  },
+  {
+    id: 'vasco-da-gama',
+    year: 1498,
+    yearLabel: '1498',
+    title: 'Da Gama reaches India',
+    region: 'Indian Ocean',
+    unitId: 4,
+    examHighlight: true,
+    description: 'Portuguese armadas forced coastal bases— Estado da Índia aimed to monopolize spice flows.',
+    ledTo: ['Afro-Asian merchant coalitions resisted or collaborated under guns', 'Inspired Dutch/English joint-stock rivals']
+  },
+  {
+    id: 'safavid-empire',
+    year: 1501,
+    yearLabel: '1501\u20131722',
+    title: 'Safavid Empire (Shia Persia)',
+    region: 'Persia',
+    unitId: 3,
+    examHighlight: true,
+    description: 'Twelver Shiism became state religion—rival Sunni Ottoman geopolitics framed Mesopotamian wars.',
+    ledTo: ['Persian literary renaissance under Shah Abbas-era Isfahan', 'Border stalemates hardened sectarian identities']
   },
   {
     id: 'protestant-reformation',
     year: 1517,
     yearLabel: '1517',
-    title: 'Protestant Reformation Begins',
+    title: 'Protestant Reformation begins',
     region: 'Europe',
-    unitId: 3,
-    description: 'Martin Luther posted his 95 Theses challenging the Catholic Church\'s sale of indulgences. The printing press spread his ideas across Europe within weeks. The Reformation shattered Western Christianity\'s unity and sparked decades of religious wars.',
-    ledTo: [
-      'Thirty Years\' War (1618\u20131648) devastated Central Europe',
-      'Weakening of Church authority opened space for Enlightenment scientific thinking',
-      'Colonial missions became competitive — each European power sought to spread its version of Christianity'
-    ]
+    unitId: 4,
+    examHighlight: true,
+    description: 'Luther’s 95 Theses attacked indulgences—printing spread reform trajectories beyond Germany.',
+    ledTo: ['Wars of Religion reshaped European state systems', 'Confessional borders influenced colonization waves']
   },
   {
-    id: 'spanish-conquest',
-    year: 1521,
-    yearLabel: '1519\u20131533',
-    title: 'Spanish Conquer Aztec and Inca Empires',
+    id: 'first-africans-spanish-americas',
+    year: 1534,
+    yearLabel: '1534',
+    title: 'African slavery in Spanish Americas expands',
     region: 'Americas',
     unitId: 4,
-    description: 'Hernán Cortés conquered the Aztec Empire by 1521 by allying with indigenous enemies of the Aztecs; Francisco Pizarro conquered the Inca by 1533. Both conquests used disease, military technology, and internal divisions. Spain established a vast colonial empire in the Americas.',
-    ledTo: [
-      'Encomienda and mita labor systems exploited indigenous peoples',
-      'Massive silver extraction from Potosí flowed globally',
-      'Casta system created racial hierarchy across Latin America',
-      'Atlantic slave trade accelerated as indigenous populations collapsed'
-    ]
+    examHighlight: false,
+    description: 'Crowns increasingly replaced dwindling Indigenous labor with shipped Africans—especially where mines/planting boomed.',
+    ledTo: ['Atlantic racial hierarchies hardened legally', 'Kinship networks recreated African cultures under coercion']
   },
   {
-    id: 'atlantic-slave-trade',
-    year: 1530,
-    yearLabel: 'c. 1530\u20131800s',
-    title: 'Atlantic Slave Trade Expands',
-    region: 'Atlantic World',
-    unitId: 4,
-    description: 'The systematic enslavement and transportation of Africans across the Atlantic grew into one of history\'s largest forced migrations. Over 12 million Africans were transported via the brutal Middle Passage to work on sugar, tobacco, and cotton plantations. Triangular trade connected Europe, Africa, and the Americas.',
-    ledTo: [
-      'Plantation economy in the Americas produced enormous wealth for European powers',
-      'West African societies destabilized by constant slave raiding',
-      'African diaspora communities formed, preserving cultural traditions under slavery',
-      'Abolitionist movements eventually emerged in the 1700\u20131800s'
-    ]
+    id: 'mughal-empire',
+    year: 1526,
+    yearLabel: '1526\u20131748',
+    title: 'Mughal Empire rises',
+    region: 'South Asia',
+    unitId: 3,
+    examHighlight: true,
+    description: 'Babur’s gunpowder victory at Panipat began Turco-Mongol rule—Akbar’s tolerance vs Aurangzeb’s tighter Islamic policy.',
+    ledTo: ['Bhakti and Sufi bridges animated syncretic devotion', 'Weak later emperors invited Company intervention']
   },
   {
     id: 'potosi-silver',
     year: 1545,
     yearLabel: '1545',
-    title: 'Potosí Silver Mine Opens',
-    region: 'Americas',
+    title: 'Potosí silver boom',
+    region: 'Andes',
     unitId: 4,
-    description: 'The discovery of the world\'s richest silver deposit at Potosí (in modern Bolivia) transformed global trade. Worked by mita (forced indigenous labor), Potosí\'s silver flooded global markets. Spanish Manila Galleons carried silver across the Pacific to China, which needed silver to pay taxes.',
-    ledTo: [
-      'Global silver circuit connected the Americas, Europe, and Asia for the first time',
-      'Spain grew enormously wealthy but also suffered inflation',
-      'Ming China\'s demand for silver made it deeply integrated in global trade',
-      'Mita labor system killed hundreds of thousands of indigenous workers'
-    ]
-  },
-  {
-    id: 'mughal-founded',
-    year: 1526,
-    yearLabel: '1526',
-    title: 'Mughal Empire Founded',
-    region: 'South Asia',
-    unitId: 3,
-    description: 'Babur defeated the Delhi Sultanate at the First Battle of Panipat, establishing the Mughal Empire in India. His grandson Akbar the Great expanded the empire and implemented religious tolerance, abolishing the jizya tax on non-Muslims and welcoming Hindus into his administration.',
-    ledTo: [
-      'Akbar\'s policies of inclusion stabilized a religiously diverse empire',
-      'Aurangzeb\'s later religious intolerance reversed this and weakened the empire',
-      'Mughal decline opened the door for British East India Company expansion'
-    ]
-  },
-  {
-    id: 'tokugawa-japan',
-    year: 1603,
-    yearLabel: '1603',
-    title: 'Tokugawa Shogunate Unifies Japan',
-    region: 'East Asia',
-    unitId: 3,
-    description: 'Tokugawa Ieyasu unified Japan after a century of civil war and established the Tokugawa Shogunate. The shogunate implemented sakoku — a strict closed-country policy limiting foreign contact to Dutch traders at a single port. Japan entered over 250 years of enforced isolation.',
-    ledTo: [
-      'Japan developed a distinctive culture without Western influence',
-      'When US Commodore Perry forced Japan open in 1853, the shock led directly to the Meiji Restoration',
-      'Sakoku preserved Japan\'s political independence but delayed industrialization'
-    ]
-  },
-  {
-    id: 'qing-dynasty',
-    year: 1644,
-    yearLabel: '1644',
-    title: 'Qing Dynasty Replaces Ming in China',
-    region: 'East Asia',
-    unitId: 3,
-    description: 'The Manchu people from northeast of China overthrew the Ming Dynasty. Qing emperors Kangxi and Qianlong presided over a prosperous era, but the Canton System restricted Western trade to a single port, and the kowtow requirement complicated diplomacy with European powers.',
-    ledTo: [
-      'Qing expansion incorporated Tibet, Mongolia, and Central Asian territories',
-      'Canton System eventually led to tensions with Britain — and the Opium Wars',
-      'Qing refusal to modernize left China vulnerable to 19th-century imperialism'
-    ]
+    examHighlight: true,
+    description: 'Rich veins bankrolled Spanish monarchy and global trades—“silver was king.”',
+    ledTo: ['Inflation rippled through Ming tax regime', 'Coerced Andean labor (mita) intensified']
   },
   {
     id: 'scientific-revolution',
-    year: 1687,
-    yearLabel: 'c. 1543\u20131687',
+    year: 1550,
+    yearLabel: '1550\u20131700',
     title: 'Scientific Revolution',
     region: 'Europe',
-    unitId: 3,
-    description: 'From Copernicus\'s heliocentric model (1543) to Newton\'s laws of motion and gravity (1687), European thinkers revolutionized understanding of the natural world by applying observation and mathematics rather than religious authority. Galileo, Kepler, and Bacon developed the scientific method.',
-    ledTo: [
-      'Enlightenment philosophy applied scientific reasoning to government and society',
-      'Technological advances enabled the Industrial Revolution',
-      'Challenged Church authority, contributing to secularism in European thought'
-    ]
+    unitId: 5,
+    examHighlight: false,
+    description: 'Empirical math models (Copernicus→Newton) challenged Aristotelian cosmos alongside new instruments.',
+    ledTo: ['Royal societies patented useful knowledge ideologies', 'Set intellectual backdrop for Enlightenment']
   },
-
-  /* ── ERA 3: c. 1750–1900 (Units 5 & 6) ─────────────────── */
-
+  {
+    id: 'russian-tsardom',
+    year: 1552,
+    yearLabel: '1552',
+    title: 'Russian expansion under Ivan IV',
+    region: 'Eastern Europe / Siberia',
+    unitId: 3,
+    examHighlight: false,
+    description: 'Muscovy conquered Kazan/Astrakhan—launching Siberian fur empire and terrorizing boyars.',
+    ledTo: ['Romanov consolidation followed Time of Troubles', 'Serfdom tightened to fund armies']
+  },
+  {
+    id: 'fluyt-ship',
+    year: 1595,
+    yearLabel: '1595',
+    title: 'Fluyt shipping innovation',
+    region: 'Europe',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Cheap, capacious Dutch hulls dominated bulk carrying—half of Europe’s tonnage by some estimates.',
+    ledTo: ['Amsterdam entrepôt supremacy', 'Template for later East Indiamen']
+  },
+  {
+    id: 'british-eic',
+    year: 1600,
+    yearLabel: '1600',
+    title: 'British East India Company',
+    region: 'Indian Ocean',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Chartered monopoly fused private capital with crown diplomacy— precursor to colonial rule.',
+    ledTo: ['Mughal crises later let Company armies tax Bengal', 'Model for joint-stock imperialism']
+  },
+  {
+    id: 'tokugawa',
+    year: 1600,
+    yearLabel: '1600\u20131868',
+    title: 'Tokugawa Shogunate',
+    region: 'Japan',
+    unitId: 3,
+    examHighlight: true,
+    description: 'Tokugawa Ieyasu unified daimyo under bakufu—strict status laws and sakoku seclusion policies.',
+    ledTo: ['Urban consumer culture flourished despite restrictions', 'Gunpowder peasants disarmed—samurai ideology romanticized']
+  },
+  {
+    id: 'dutch-voc',
+    year: 1602,
+    yearLabel: '1602',
+    title: 'Dutch East India Company',
+    region: 'Indian Ocean',
+    unitId: 4,
+    examHighlight: false,
+    description: 'First mega joint-stock firm wielding sovereign powers in Asian seas.',
+    ledTo: ['Spice-island warfare displaced Portuguese footholds', 'Finance innovations in Amsterdam']
+  },
+  {
+    id: 'jamestown',
+    year: 1607,
+    yearLabel: '1607',
+    title: 'Jamestown colony',
+    region: 'North America',
+    unitId: 4,
+    examHighlight: false,
+    description: 'Virginia Company settlement—tobacco boom later anchored English Atlantic slavery.',
+    ledTo: ['Prototype joint-stock colonization', ' Indigenous–settler wars along Chesapeake']
+  },
+  {
+    id: 'taj-mahal',
+    year: 1632,
+    yearLabel: '1632',
+    title: 'Taj Mahal construction begins',
+    region: 'South Asia',
+    unitId: 3,
+    examHighlight: false,
+    description: 'Shah Jahan’s marble mausoleum symbolized Mughal Persianate splendor.',
+    ledTo: ['Architectural prestige legitimizing dynasty', 'Later austerity under Aurangzeb shifted priorities']
+  },
+  {
+    id: 'louis-xiv',
+    year: 1643,
+    yearLabel: '1643\u20131715',
+    title: 'Louis XIV absolute monarchy',
+    region: 'France',
+    unitId: 5,
+    examHighlight: false,
+    description: 'Sun King centralized Versailles patronage—nobles competed for favor while bureaucracies taxed peasants.',
+    ledTo: ['French hegemony strained finances -> later revolutionary crisis', 'Model of dynastic glory across Europe']
+  },
+  {
+    id: 'newton-principia',
+    year: 1687,
+    yearLabel: '1687',
+    title: 'Newton publishes Principia',
+    region: 'Europe',
+    unitId: 5,
+    examHighlight: false,
+    description: 'Laws of motion universal gravitation codified mechanical universe—anchor text for Scientific Revolution.',
+    ledTo: [' fueled Enlightenment confidence in natural laws', ' Navigation/trigonometry applications']
+  },
+  {
+    id: 'qing-founded',
+    year: 1688,
+    yearLabel: '1644\u20131911',
+    title: 'Qing consolidation (Manchu rule)',
+    region: 'East Asia',
+    unitId: 3,
+    examHighlight: true,
+    description: 'Manchu banners ruled vast empire—Han/Manchu tensions, isolationist instincts, yet expansive Central Asian wars.',
+    ledTo: ['High Qing demographic boom then nineteenth-century shocks', 'Models of minority elite governing majority Han']
+  },
+  {
+    id: 'glorious-revolution',
+    year: 1689,
+    yearLabel: '1689',
+    title: 'Glorious Revolution (England)',
+    region: 'Europe',
+    unitId: 5,
+    examHighlight: false,
+    description: 'William & Mary accepted Bill of Rights limits—Parliament strengthened vs Stuart absolutism.',
+    ledTo: ['Bank of England fiscal innovations', 'Ideological currents influencing Atlantic revolutions']
+  },
+  {
+    id: 'peter-great',
+    year: 1689,
+    yearLabel: '1689\u20131725',
+    title: 'Peter the Great modernizes Russia',
+    region: 'Russia',
+    unitId: 3,
+    examHighlight: true,
+    description: 'Westernizing army/navy, beard tax, St. Petersburg window—coercive labor funded reforms.',
+    ledTo: ['Great Northern War gains Baltic access', 'Serfdom intensified to pay for armies']
+  },
   {
     id: 'enlightenment',
-    year: 1748,
-    yearLabel: 'c. 1700\u20131780s',
-    title: 'Enlightenment Peaks in Europe',
-    region: 'Europe',
+    year: 1715,
+    yearLabel: '1715\u20131789',
+    title: 'Enlightenment spreads',
+    region: 'Atlantic',
     unitId: 5,
-    description: 'Enlightenment philosophers applied reason to politics and society. Locke argued for natural rights and consent of the governed; Rousseau for the social contract; Montesquieu for separation of powers; Voltaire for religious tolerance. These ideas spread through salons, pamphlets, and the great Encyclopédie.',
-    ledTo: [
-      'American Revolution (1776) — Declaration of Independence directly quoted Locke',
-      'French Revolution (1789) — Declaration of Rights of Man',
-      'Latin American independence movements of the early 1800s',
-      'Abolitionism — natural rights arguments were applied to enslaved people'
-    ]
+    examHighlight: true,
+    description: 'Salons, encyclopedias, and philosophes (e.g., Montesquieu) theorized rights, separation of powers, and progress.',
+    ledTo: ['Inspired Atlantic revolutions and demands for suffrage', 'Challenged divine-right absolutism globally']
   },
   {
-    id: 'industrial-revolution',
-    year: 1760,
-    yearLabel: 'c. 1760\u20131840',
-    title: 'Industrial Revolution Begins in Britain',
-    region: 'Europe',
+    id: 'seven-years-war',
+    year: 1756,
+    yearLabel: '1756\u20131763',
+    title: 'Seven Years’ War',
+    region: 'Global',
     unitId: 5,
-    description: 'Britain\'s coal and iron deposits, navigable rivers, colonial empire, and accumulated capital enabled the first Industrial Revolution. James Watt\'s steam engine (1769), the spinning jenny, and the factory system transformed production. Cities swelled with workers facing brutal conditions.',
-    ledTo: [
-      'Urbanization and rise of the working class (proletariat)',
-      'Karl Marx\'s Communist Manifesto (1848) and socialist movements',
-      'Britain\'s industrial advantage fueled imperial expansion in Africa and Asia',
-      'Industrialization spread to France, Germany, US, Japan by mid-1800s'
-    ]
+    examHighlight: false,
+    description: 'First globe-spanning great-power war—British gains in India/North America vs French allies.',
+    ledTo: ['British debt precipitated imperial taxes angering colonists', 'France’s fiscal strain fed 1789 crisis']
+  },
+  {
+    id: 'british-india-expansion',
+    year: 1757,
+    yearLabel: '1757',
+    title: 'British power surges in India',
+    region: 'South Asia',
+    unitId: 5,
+    examHighlight: false,
+    description: 'Plassey-era intrigues let Company armies dominate Bengal revenue.',
+    ledTo: ['Direct Crown rule after 1857 Mutiny', 'Indian artisan deindustrialization debates']
+  },
+  {
+    id: 'industrial-revolution-britain',
+    year: 1760,
+    yearLabel: '1760\u20131840',
+    title: 'First Industrial Revolution',
+    region: 'Britain / Europe',
+    unitId: 5,
+    examHighlight: true,
+    description: 'Coal-steam factories, spinning tech, transport canals—Britain first thanks to capital, coal, colonies, and skilled artisans.',
+    ledTo: ['Labor protests → Factory Acts improving child hours', 'Ideologies from Smith (markets) to Marx (exploitation)']
   },
   {
     id: 'american-revolution',
     year: 1776,
-    yearLabel: '1776',
-    title: 'American Revolution & Independence',
-    region: 'Americas',
+    yearLabel: '1765\u20131783',
+    title: 'American Revolution',
+    region: 'Atlantic',
     unitId: 5,
-    description: 'Thirteen British colonies declared independence, citing Enlightenment principles of natural rights and consent of the governed. The Declaration of Independence (Jefferson, 1776) and the U.S. Constitution (1787) established the first modern democratic republic.',
-    ledTo: [
-      'Inspired the French Revolution — French officers like Lafayette brought democratic ideas home',
-      'Established a model of republican government copied worldwide',
-      'Monroe Doctrine (1823) extended American influence over Latin America'
-    ]
+    examHighlight: true,
+    description: 'Colonial elites leveraged Enlightenment language vs parliamentary taxation—French intervention decisive.',
+    ledTo: ['Inspired Latin American & French revolutionaries', 'Federal republic model (with slavery intact)']
   },
   {
     id: 'french-revolution',
     year: 1789,
-    yearLabel: '1789',
+    yearLabel: '1789\u20131799',
     title: 'French Revolution',
-    region: 'Europe',
+    region: 'France',
     unitId: 5,
-    description: 'France\'s fiscal crisis and social inequality exploded into revolution. The Estates-General convened, the Bastille was stormed, and the Declaration of the Rights of Man proclaimed liberty and equality. The Reign of Terror executed thousands. Napoleon Bonaparte rose from the chaos to conquer most of Europe.',
-    ledTo: [
-      'Napoleon spread revolutionary ideals (and the Napoleonic Code) across Europe',
-      'Haitian Revolution — enslaved people in Saint-Domingue applied revolutionary ideals',
-      'Nationalism became a dominant political force across Europe and Latin America',
-      'Conservative backlash led to the Concert of Europe system after 1815'
-    ]
+    examHighlight: true,
+    description: 'Estates-General deadlock exploded—social inequality, bread shortages, weak Bourbons, Enlightenment critiques.',
+    ledTo: ['Reign of Terror radicalized politics', 'Napoleonic wars exported civil codes']
   },
   {
     id: 'haitian-revolution',
@@ -425,360 +638,800 @@ var TIMELINE_EVENTS = [
     title: 'Haitian Revolution',
     region: 'Caribbean',
     unitId: 5,
-    description: 'The only successful slave revolt in history. Toussaint Louverture led enslaved Africans in Saint-Domingue to overthrow French colonial rule. Haiti declared independence in 1804 as the first Black republic and the second republic in the Western Hemisphere.',
-    ledTo: [
-      'Terrified slaveholders across the Americas and strengthened pro-slavery arguments in the US South',
-      'Napoleon sold Louisiana to the US (partly to fund the failed attempt to retake Haiti)',
-      'Inspired enslaved people and abolitionists globally',
-      'Haiti was isolated diplomatically and economically for decades as punishment'
-    ]
+    examHighlight: false,
+    description: 'Enslaved and free people of color defeated French, British, Spanish forces—first Black republic.',
+    ledTo: ['Terrified US/Caribbean planters tightened racial laws', ' Bolivar received Haitian aid']
   },
   {
-    id: 'latin-american-independence',
-    year: 1810,
-    yearLabel: '1810\u20131825',
-    title: 'Latin American Independence Movements',
-    region: 'Americas',
-    unitId: 5,
-    description: 'Simón Bolívar liberated Venezuela, Colombia, Ecuador, Peru, and Bolivia; José de San Martín liberated Argentina and Chile; Miguel Hidalgo sparked Mexican independence. Creole elites — American-born people of Spanish descent — led most movements, motivated by Enlightenment ideas and resentment of Spanish trade restrictions.',
-    ledTo: [
-      'Spain lost its entire American empire within 15 years',
-      'New nations struggled with political instability and caudillo rule',
-      'Monroe Doctrine declared the Americas off-limits to European re-colonization',
-      'Economic dependence on Britain and later the US replaced Spanish colonial dependency'
-    ]
-  },
-  {
-    id: 'communist-manifesto',
-    year: 1848,
-    yearLabel: '1848',
-    title: 'Marx\'s Communist Manifesto & Revolutions of 1848',
+    id: 'mary-wollstonecraft',
+    year: 1792,
+    yearLabel: '1792',
+    title: 'Early feminist polemic',
     region: 'Europe',
     unitId: 5,
-    description: 'Karl Marx and Friedrich Engels published The Communist Manifesto arguing that all history is class struggle and predicting workers\' revolution against capitalism. Simultaneously, revolutions broke out across Europe in 1848, driven by nationalism and liberal demands for constitutional government.',
-    ledTo: [
-      'Socialist and labor movements grew throughout the 19th century',
-      'Trade unions and workers\' rights movements organized across industrialized nations',
-      'Russian Revolution (1917) was directly inspired by Marxist ideology',
-      'Governments responded with social reforms to preempt more radical change'
-    ]
+    examHighlight: false,
+    description: 'Mary Wollstonecraft’s Vindication demanded female education and citizenship.',
+    ledTo: ['Women’s rights conventions later cite her', 'Linked abolitionist and gender reform circles']
+  },
+  {
+    id: 'napoleon',
+    year: 1799,
+    yearLabel: '1799\u20131815',
+    title: 'Napoleonic era',
+    region: 'Europe',
+    unitId: 5,
+    examHighlight: false,
+    description: 'Coup to empire—legal codification, continental blockade, nationalist reactions.',
+    ledTo: ['Congress of Vienna conservative order', 'Latin American openings as Iberian crowns wobbled']
+  },
+  {
+    id: 'latin-american-revolutions',
+    year: 1810,
+    yearLabel: '1806\u20131826',
+    title: 'Latin American independence wars',
+    region: 'Americas',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Creole elites (Bolivar, San Martín) exploited Napoleonic Spain’s weakness citing Enlightenment equality.',
+    ledTo: ['New republics still reliant on export monocultures', 'Persistent Indigenous exclusion']
+  },
+  {
+    id: 'congress-vienna',
+    year: 1815,
+    yearLabel: '1815',
+    title: 'Congress of Vienna',
+    region: 'Europe',
+    unitId: 5,
+    examHighlight: false,
+    description: 'Conservative diplomats redrew borders to bottle nationalism—Concert of Europe policing.',
+    ledTo: ['Delayed but did not stop liberal-national revolutions', 'sanctioned great-power spheres globally']
   },
   {
     id: 'opium-wars',
     year: 1839,
     yearLabel: '1839\u20131860',
-    title: 'Opium Wars — China Opened by Force',
+    title: 'Opium Wars',
     region: 'East Asia',
     unitId: 6,
-    description: 'Britain fought two wars to force China to accept British opium trade and open its ports. The Treaty of Nanking (1842) ceded Hong Kong, opened five treaty ports, and established extraterritoriality. Spheres of influence carved up Chinese trade among European powers and Japan.',
-    ledTo: [
-      'China lost effective sovereignty over key ports and territories',
-      'Boxer Rebellion (1900) — Chinese nationalist uprising against foreign influence',
-      'Qing Dynasty\'s weakness accelerated its collapse in 1912',
-      'Demonstrated European willingness to use force to open markets'
-    ]
+    examHighlight: true,
+    description: 'British Indian opium exports crashed Qing silver balances—Nanjing Treaty opened treaty ports.',
+    ledTo: ['Unequal treaties spread extraterritoriality', ' fueled domestic rebellions (Taiping)']
+  },
+  {
+    id: 'tanzimat',
+    year: 1839,
+    yearLabel: '1839\u20131876',
+    title: 'Tanzimat reforms',
+    region: 'Ottoman Empire',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Ottoman elites modernized armies/bureaucracies—partial equality pledges amid debt crises.',
+    ledTo: ['Young Ottoman constitutional experiments', 'Ethnonational centrifuges in Balkans']
+  },
+  {
+    id: 'irish-famine',
+    year: 1845,
+    yearLabel: '1845\u20131849',
+    title: 'Irish Potato Famine',
+    region: 'Europe / Atlantic',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Blight + colonial grain exports killed ~1 million; millions emigrated west.',
+    ledTo: ['Irish diaspora shaped US labor politics', ' hardened anti-British nationalism']
+  },
+  {
+    id: 'communist-manifesto',
+    year: 1848,
+    yearLabel: '1848',
+    title: 'Communist Manifesto',
+    region: 'Europe',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Marx & Engels theorized class struggle amid 1848 revolutions.',
+    ledTo: ['Socialist parties split Second International', 'Russian Revolution later claimed lineage']
+  },
+  {
+    id: 'seneca-falls',
+    year: 1848,
+    yearLabel: '1848',
+    title: 'Seneca Falls Convention',
+    region: 'United States',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Early US women’s rights gathering demanding suffrage and legal reforms.',
+    ledTo: ['Linked abolitionist networks to feminist organizing', 'Template for later amendments campaigns']
+  },
+  {
+    id: 'taiping-rebellion',
+    year: 1850,
+    yearLabel: '1850\u20131864',
+    title: 'Taiping Rebellion',
+    region: 'China',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Christian-inflected regime nearly toppled Qing—mass death and devastation.',
+    ledTo: ['Regional armies (e.g., Zeng) weakened central fiscal grip', 'Foreign customs bureaucracies entrenched']
   },
   {
     id: 'sepoy-mutiny',
     year: 1857,
     yearLabel: '1857',
-    title: 'Sepoy Mutiny — Indian Rebellion',
+    title: 'Sepoy Mutiny / Revolt',
     region: 'South Asia',
     unitId: 6,
-    description: 'Indian soldiers (sepoys) in the British East India Company\'s army revolted, partly over rifle cartridges believed to be greased with pig and cow fat (offensive to Muslims and Hindus). The uprising spread but was suppressed. Britain abolished the East India Company and established direct Crown rule.',
-    ledTo: [
-      'British Raj established — Queen Victoria became Empress of India',
-      'Economic exploitation intensified, draining India\'s wealth',
-      'Indian National Congress founded in 1885, beginning organized political resistance',
-      'Gandhi\'s independence movement was the long-term consequence'
-    ]
+    examHighlight: false,
+    description: 'Indian soldiers rebelled over cartridges & grievances—British brutality followed.',
+    ledTo: ['British Crown assumed India directly', 'Princely states integrated under tighter surveillance']
+  },
+  {
+    id: 'suez-canal',
+    year: 1859,
+    yearLabel: '1859\u20131869',
+    title: 'Suez Canal construction',
+    region: 'Egypt',
+    unitId: 6,
+    examHighlight: false,
+    description: 'French-led dug-through financed by Egyptian debt—later British strategic stakes.',
+    ledTo: ['Indian Ocean–Europe transit times collapsed', 'Debt crises invited European financial control']
+  },
+  {
+    id: 'social-darwinism',
+    year: 1865,
+    yearLabel: '1860s\u20131870s',
+    title: 'Social Darwinism spreads',
+    region: 'Atlantic',
+    unitId: 6,
+    examHighlight: true,
+    description: 'Misapplied evolutionary metaphors justified imperial racism and “survival of fittest” policies.',
+    ledTo: ['Scientific racism bolstered segregation sets overseas', 'Critics pushed reform Darwinism']
+  },
+  {
+    id: 'emancipation-russia',
+    year: 1861,
+    yearLabel: '1861',
+    title: 'Russian serf emancipation',
+    region: 'Russia',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Tsar Alexander II freed serfs with redemption payments—half-hearted land reform.',
+    ledTo: ['Industrial labor pools grew unevenly', 'Radicals frustrated pace -> revolutionary underground']
+  },
+  {
+    id: 'emancipation-proclamation-us',
+    year: 1863,
+    yearLabel: '1863',
+    title: 'US Emancipation Proclamation',
+    region: 'United States',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Lincoln war measure freeing Confederacy-held slaves—morally pivotal though incomplete.',
+    ledTo: ['13th–15th Amendments followed Union victory', 'Sharecropping still trapped millions']
+  },
+  {
+    id: 'congo-leopold',
+    year: 1885,
+    yearLabel: '1885\u20131908',
+    title: 'Leopold’s Congo atrocities',
+    region: 'Central Africa',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Rubber quotas enforced by severed-hands terror—international reform crusade followed.',
+    ledTo: ['Belgian state annexation 1908', 'Early human-rights NGO activism']
   },
   {
     id: 'meiji-restoration',
     year: 1868,
     yearLabel: '1868',
-    title: 'Meiji Restoration — Japan Modernizes',
-    region: 'East Asia',
+    title: 'Meiji Restoration',
+    region: 'Japan',
     unitId: 6,
-    description: 'Alarmed by Western imperialism (especially US Commodore Perry\'s forced opening of Japan in 1853), Japanese leaders overthrew the Tokugawa Shogunate and rapidly modernized: industrialization, Western-style military, national education, and a constitution were all adopted within decades.',
-    ledTo: [
-      'Japan avoided colonization and became an imperial power itself',
-      'Defeated China (1895) and Russia (1905), shocking the world',
-      'Meiji model inspired other non-Western nations to modernize',
-      'Japanese imperialism eventually led to WWII in the Pacific'
-    ]
+    examHighlight: true,
+    description: 'After Perry’s ships exposed vulnerability, oligarchs centralized rule and imported industry/military models.',
+    ledTo: ['Japan defeated Qing & Russia—joined imperial club', 'Colonized Taiwan/Korea']
+  },
+  {
+    id: 'second-industrial',
+    year: 1870,
+    yearLabel: '1870\u20131914',
+    title: 'Second Industrial Revolution',
+    region: 'Global North',
+    unitId: 6,
+    examHighlight: true,
+    description: 'Steel, chemicals, electricity, telecommunications—Germany & US challenged British dominance.',
+    ledTo: ['Trusts & unions battled over factory regimes', 'Imperial scramble intensified for markets/materials']
+  },
+  {
+    id: 'german-unification',
+    year: 1871,
+    yearLabel: '1871',
+    title: 'German unification',
+    region: 'Europe',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Bismarck’s wars stitched Protestant north with Catholic south under Hohenzollerns.',
+    ledTo: ['New rival tilted European alliance systems', 'Industrial powerhouse fueled naval arms race']
+  },
+  {
+    id: 'chinese-exclusion-us',
+    year: 1882,
+    yearLabel: '1882',
+    title: 'Chinese Exclusion Act (US)',
+    region: 'United States',
+    unitId: 6,
+    examHighlight: false,
+    description: 'First major US law banning ethnicity-based immigration—racist labor politics.',
+    ledTo: ['Set precedent for Asian exclusion quotas', ' shaped diaspora settlement patterns']
   },
   {
     id: 'berlin-conference',
-    year: 1884,
-    yearLabel: '1884\u20131885',
-    title: 'Berlin Conference — Scramble for Africa',
-    region: 'Africa',
+    year: 1885,
+    yearLabel: '1885',
+    title: 'Berlin Conference',
+    region: 'Africa / Europe',
     unitId: 6,
-    description: 'European powers met in Berlin (without any African representation) to set rules for claiming African territory. The result was the rapid colonial division of Africa — by 1914, only Ethiopia and Liberia remained free. Belgium\'s Leopold II personally owned the Congo, where an estimated 10 million died.',
-    ledTo: [
-      'Africa under European colonial rule for most of the 20th century',
-      'Artificial colonial borders ignored ethnic and linguistic boundaries, causing future conflicts',
-      'Resource extraction (rubber, ivory, minerals) impoverished African populations',
-      'African nationalism and anti-colonial movements grew in response'
-    ]
+    examHighlight: true,
+    description: 'European diplomats partitioned African claims without African voices—“Scramble” accelerated.',
+    ledTo: ['Rubber/concession regimes exploited Africans', 'Resistance wars (e.g., Ethiopians at Adwa)']
   },
   {
-    id: 'battle-adwa',
-    year: 1896,
-    yearLabel: '1896',
-    title: 'Battle of Adwa — Ethiopia Defeats Italy',
-    region: 'Africa',
+    id: 'spheres-china',
+    year: 1895,
+    yearLabel: '1890s',
+    title: 'European spheres in China',
+    region: 'East Asia',
     unitId: 6,
-    description: 'Emperor Menelik II of Ethiopia decisively defeated the Italian army attempting to colonize Ethiopia, making it the first African nation to defeat a European colonial force. Ethiopia remained independent throughout the Scramble for Africa.',
-    ledTo: [
-      'Ethiopia became a symbol of African resistance and independence',
-      'Pan-African movement adopted Ethiopia as a symbol of Black freedom',
-      'Italy\'s humiliation contributed to its later aggressive foreign policy under Mussolini'
-    ]
+    examHighlight: false,
+    description: 'Railway/mining leases sliced Qing sovereignty though dynasty nominally ruled.',
+    ledTo: ['US Open Door notes sought equal exploitation', 'Boxer backlash targeted missionaries']
   },
-
-  /* ── ERA 4: c. 1900–present (Units 7, 8 & 9) ───────────── */
-
   {
-    id: 'wwi-begins',
-    year: 1914,
-    yearLabel: '1914',
-    title: 'World War I Begins',
-    region: 'Europe / Global',
+    id: 'spanish-american-war',
+    year: 1898,
+    yearLabel: '1898',
+    title: 'Spanish-American War',
+    region: 'Caribbean / Pacific',
+    unitId: 6,
+    examHighlight: false,
+    description: 'US seized Cuba’s independence narrative yet annexed Philippines/Puerto Rico/Guam.',
+    ledTo: ['Debates over empire echoed in Philippine-American War', ' US navy bases locked Pacific']
+  },
+  {
+    id: 'united-fruit',
+    year: 1899,
+    yearLabel: '1899',
+    title: 'United Fruit Company',
+    region: 'Central America',
+    unitId: 6,
+    examHighlight: false,
+    description: 'US banana conglomerate backed coups—“banana republic” labor abuses.',
+    ledTo: ['Dependent monoculture economies', 'Labor radicalism & nationalist backlash']
+  },
+  {
+    id: 'boxer-rebellion',
+    year: 1899,
+    yearLabel: '1899\u20131901',
+    title: 'Boxer Rebellion',
+    region: 'China',
+    unitId: 6,
+    examHighlight: false,
+    description: 'Yihetuan upsurge attacked foreigners—Eight Nation armies punished Qing.',
+    ledTo: ['Huge indemnity weakened dynasty fatally', ' Revolutionary nationalism surged']
+  },
+  {
+    id: 'muslim-league',
+    year: 1906,
+    yearLabel: '1906',
+    title: 'All-India Muslim League founded',
+    region: 'South Asia',
     unitId: 7,
-    description: 'The assassination of Archduke Franz Ferdinand triggered a chain reaction through Europe\'s alliance system (MAIN: Militarism, Alliances, Imperialism, Nationalism). The Triple Entente (Britain, France, Russia) faced the Triple Alliance (Germany, Austria-Hungary, Italy). Trench warfare on the Western Front created a stalemate that killed millions.',
-    ledTo: [
-      'Russian Revolution (1917) — war exhaustion toppled the Tsar',
-      'Ottoman Empire collapsed, reshaping the Middle East',
-      'Treaty of Versailles created conditions for WWII',
-      'First use of poison gas, tanks, and aerial warfare'
-    ]
+    examHighlight: false,
+    description: 'Elite political vehicle later demanding Pakistan—distinct from Congress nationalism.',
+    ledTo: ['Partition debates intensified post-WWII', 'Legacy of communal electoral anxieties']
+  },
+  {
+    id: 'mexican-revolution',
+    year: 1910,
+    yearLabel: '1910\u20131920',
+    title: 'Mexican Revolution',
+    region: 'Mexico',
+    unitId: 7,
+    examHighlight: false,
+    description: 'Peasant armies (Zapata, Villa) demanded land—new constitution enshrined labor/land rights unevenly.',
+    ledTo: ['PRI corporatist state consolidated later', ' US interventions shaped border politics']
+  },
+  {
+    id: 'world-war-i',
+    year: 1914,
+    yearLabel: '1914\u20131918',
+    title: 'World War I',
+    region: 'Global',
+    unitId: 7,
+    examHighlight: true,
+    description: 'Total war—trench slaughter, colonial troops, propaganda—sparked by Balkan assassination amid imperial rivalries.',
+    ledTo: ['Treaty Versailles humiliated Germany -> WWII seeds', ' League mandate system redrew Middle East']
+  },
+  {
+    id: 'armenian-genocide',
+    year: 1915,
+    yearLabel: '1915\u20131917',
+    title: 'Armenian genocide',
+    region: 'Ottoman Empire',
+    unitId: 7,
+    examHighlight: false,
+    description: 'Wartime Young Turk regime deported/killed Anatolian Armenians.',
+    ledTo: ['International law debates on genocide term later', 'Turkish republic silence/contentions']
   },
   {
     id: 'russian-revolution',
     year: 1917,
     yearLabel: '1917',
-    title: 'Russian Revolution — Bolsheviks Seize Power',
-    region: 'Europe / Asia',
+    title: 'Russian Revolutions',
+    region: 'Russia',
     unitId: 7,
-    description: 'WWI\'s devastating losses and food shortages toppled Tsar Nicholas II in the February Revolution. Lenin\'s Bolsheviks then seized power in the October Revolution, promising "peace, land, bread." Russia signed a separate peace with Germany (Treaty of Brest-Litovsk) and a brutal civil war followed.',
-    ledTo: [
-      'Soviet Union formed — world\'s first communist state',
-      'Cold War ideological conflict between capitalism and communism',
-      'Inspired communist movements globally, from China to Cuba',
-      'Stalin\'s totalitarian rule and the Gulag system'
-    ]
+    examHighlight: true,
+    description: 'February tsar fell; October Bolsheviks seized power promising bread/peace/land.',
+    ledTo: ['Civil war & Red Terror', 'Comintern exported revolution discourse']
   },
   {
-    id: 'treaty-versailles',
-    year: 1919,
-    yearLabel: '1919',
-    title: 'Treaty of Versailles Ends WWI',
-    region: 'Europe',
+    id: 'zimmermann-telegram',
+    year: 1917,
+    yearLabel: '1917',
+    title: 'Zimmermann Telegram',
+    region: 'Atlantic',
     unitId: 7,
-    description: 'The Treaty forced Germany to accept sole war guilt (Article 231), pay crushing reparations, lose territory, and disarm. Woodrow Wilson\'s idealistic Fourteen Points were largely ignored. The League of Nations formed without US participation. Germany\'s humiliation created fertile ground for extremism.',
-    ledTo: [
-      'Great Depression worsened by reparations debt and economic instability',
-      'Hitler\'s rise — Nazi Party exploited German resentment of the treaty',
-      'League of Nations proved unable to stop aggression without US backing',
-      'New nations created from collapsed empires faced immediate instability'
-    ]
+    examHighlight: false,
+    description: 'German proposal for Mexican alliance vs US leaked—swung American opinion toward war.',
+    ledTo: ['US doughboys tipped western front', 'Mexico declined risking invasion']
+  },
+  {
+    id: 'league-nations',
+    year: 1920,
+    yearLabel: '1920',
+    title: 'League of Nations',
+    region: 'Global',
+    unitId: 7,
+    examHighlight: false,
+    description: 'Wilsonian collective security experiment lacked US membership/enforcement teeth.',
+    ledTo: ['Failed Manchuria/Ethiopia crises discredited it', ' UN Charter learned partly from flaws']
+  },
+  {
+    id: 'reza-shah',
+    year: 1925,
+    yearLabel: '1925',
+    title: 'Pahlavi modernization begins',
+    region: 'Iran',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Reza Shah forced secular western dress/education—centralized army crushed tribes.',
+    ledTo: ['Oil rents funded state-led industry', 'Islamic backlash exploded in 1979 revolution']
   },
   {
     id: 'great-depression',
     year: 1929,
-    yearLabel: '1929',
+    yearLabel: '1929\u20131933',
     title: 'Great Depression',
     region: 'Global',
     unitId: 7,
-    description: 'The US stock market crash triggered a global economic collapse. Unemployment reached 25% in the US. International trade collapsed. Governments that could not provide economic relief lost legitimacy. Extremist parties — fascist and communist — surged in popularity.',
-    ledTo: [
-      'Hitler\'s Nazi Party won power in Germany — promising economic recovery',
-      'Mussolini consolidated fascist control in Italy',
-      'Japan\'s military leaders pursued imperial expansion to secure resources',
-      'New Deal in US and Keynesian economics transformed government\'s economic role'
-    ]
+    examHighlight: false,
+    description: 'Wall Street crash cascaded via gold-standard linkages—unemployment & protectionism.',
+    ledTo: ['New Deal / Popular Front experiments', 'Radicalized voters toward fascism & militarism']
   },
   {
-    id: 'nazi-rise',
+    id: 'new-deal',
     year: 1933,
     yearLabel: '1933',
-    title: 'Hitler Becomes Chancellor — Nazi Germany',
-    region: 'Europe',
+    title: 'US New Deal',
+    region: 'United States',
     unitId: 7,
-    description: 'Adolf Hitler became German Chancellor in 1933 and rapidly dismantled the Weimar Republic. The Nazi regime combined extreme nationalism, antisemitism, and totalitarian control through propaganda, terror, and the Gestapo. The Nuremberg Laws (1935) stripped Jews of citizenship.',
-    ledTo: [
-      'Holocaust — systematic genocide of 6 million Jews and 5 million others',
-      'Appeasement by Britain and France allowed German expansion',
-      'WWII — Germany\'s invasion of Poland (1939) triggered the war',
-      'Nuremberg Trials established the concept of crimes against humanity'
-    ]
+    examHighlight: false,
+    description: 'FDR’s relief/recovery/reform— infrastructure jobs, Social Security seeds, bank regs.',
+    ledTo: ['Anchored US liberal coalition till 1970s', 'Influenced postwar developmental states globally']
   },
   {
-    id: 'wwii',
+    id: 'world-war-ii',
     year: 1939,
     yearLabel: '1939\u20131945',
     title: 'World War II',
     region: 'Global',
-    unitId: 7,
-    description: 'Germany\'s invasion of Poland launched WWII. Allied powers (Britain, US from 1941, USSR from 1941) faced the Axis (Germany, Italy, Japan). D-Day (1944) opened the Western Front; the Pacific War ended with the atomic bombs on Hiroshima and Nagasaki (1945). The Holocaust murdered 6 million Jews.',
-    ledTo: [
-      'Cold War — US and USSR emerged as rival superpowers',
-      'United Nations formed to prevent future wars',
-      'Decolonization accelerated — weakened European empires could no longer hold colonies',
-      'Nuclear age began — MAD doctrine shaped global strategy for decades',
-      'Marshall Plan rebuilt Europe; Nuremberg Trials established international law'
-    ]
-  },
-  {
-    id: 'indian-independence',
-    year: 1947,
-    yearLabel: '1947',
-    title: 'Indian Independence & Partition',
-    region: 'South Asia',
     unitId: 8,
-    description: 'Britain granted India independence after Gandhi\'s decades-long nonviolent resistance movement. The Partition simultaneously created Muslim-majority Pakistan, causing one of history\'s largest refugee migrations — 14 million people displaced — and an estimated one million deaths in communal violence.',
-    ledTo: [
-      'Wave of African and Asian decolonization followed',
-      'Nehru led India as a founding voice of the Non-Aligned Movement',
-      'India-Pakistan conflict over Kashmir remains unresolved',
-      'Partition trauma shaped South Asian politics for generations'
-    ]
+    examHighlight: true,
+    description: 'Axis aggression vs Allied mobilization—total economies, genocides, colonial troops decisive.',
+    ledTo: ['UN & Bretton Woods order', 'Decolonization accelerators']
   },
   {
-    id: 'cold-war-begins',
-    year: 1947,
-    yearLabel: '1947\u20131991',
-    title: 'Cold War — US vs. USSR',
-    region: 'Global',
+    id: 'holocaust',
+    year: 1941,
+    yearLabel: '1941\u20131945',
+    title: 'Holocaust',
+    region: 'Europe',
     unitId: 8,
-    description: 'The wartime alliance between the US and USSR collapsed into ideological rivalry. The Truman Doctrine committed the US to containing communism; the Marshall Plan rebuilt Western Europe; the Iron Curtain divided Europe. NATO and the Warsaw Pact militarized the divide. The arms race produced tens of thousands of nuclear weapons.',
-    ledTo: [
-      'Korean War and Vietnam War as proxy conflicts',
-      'Cuban Missile Crisis (1962) brought the world close to nuclear war',
-      'Space Race — Sputnik (1957) and Apollo 11 (1969)',
-      'Decolonizing nations forced to choose sides or form Non-Aligned Movement'
-    ]
+    examHighlight: true,
+    description: 'Nazi Germany systematically murdered six million Jews plus Roma, disabled, Slavs, others.',
+    ledTo: ['1948 Genocide Convention norms', 'Founding trauma of Israeli state & diaspora memory politics']
   },
   {
-    id: 'communist-china',
+    id: 'stalin-era',
+    year: 1928,
+    yearLabel: '1928\u20131953',
+    title: 'Stalinist industrialization & WWII USSR',
+    region: 'Soviet Union',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Five-Year Plans, collectivization famines, purges—then wartime mobilization defeating Nazism.',
+    ledTo: ['Superpower status & satellite bloc', 'De-Stalinization debates after 1956']
+  },
+  {
+    id: 'green-revolution',
+    year: 1950,
+    yearLabel: '1940s\u20131970s',
+    title: 'Green Revolution',
+    region: 'Global South',
+    unitId: 8,
+    examHighlight: true,
+    description: 'High-yield wheat/rice strains, fertilizers, irrigation—boosted calories yet uneven access.',
+    ledTo: ['India/Pakistan/Mexico staved off famine short-term', 'Environmental costs & debt for small farmers']
+  },
+  {
+    id: 'china-1949',
     year: 1949,
     yearLabel: '1949',
-    title: 'Communist Revolution in China',
+    title: 'Chinese Communist Revolution completes',
+    region: 'China',
+    unitId: 8,
+    examHighlight: false,
+    description: 'PLA victory expelled Nationalists to Taiwan—Mao proclaimed People’s Republic.',
+    ledTo: ['Sino-Soviet alliance then split', 'Land reform then disastrous Great Leap']
+  },
+  {
+    id: 'hiroshima-nagasaki',
+    year: 1945,
+    yearLabel: '1945',
+    title: 'Atomic bombings',
+    region: 'Japan',
+    unitId: 8,
+    examHighlight: false,
+    description: 'US atomic weapons hastened Japanese surrender—opened nuclear age.',
+    ledTo: ['Arms race ideology', 'Japanese anti-war constitutionalism']
+  },
+  {
+    id: 'un-founded',
+    year: 1945,
+    yearLabel: '1945',
+    title: 'United Nations founded',
+    region: 'Global',
+    unitId: 8,
+    examHighlight: false,
+    description: 'San Francisco Charter framed collective security & human rights (via UDHR later).',
+    ledTo: ['Peacekeeping missions debated sovereignty vs R2P', 'Specialized agencies (WHO, UNESCO)']
+  },
+  {
+    id: 'philippines-independence',
+    year: 1946,
+    yearLabel: '1946',
+    title: 'Philippines independence',
+    region: 'Southeast Asia',
+    unitId: 8,
+    examHighlight: false,
+    description: 'US granted sovereignty retaining bases—Cold War ally.',
+    ledTo: ['Marcos dictatorship & People Power later', 'OFW labor migration economies']
+  },
+  {
+    id: 'partition-india',
+    year: 1947,
+    yearLabel: '1947',
+    title: 'Partition of India',
+    region: 'South Asia',
+    unitId: 8,
+    examHighlight: true,
+    description: 'British rushed Radcliffe Line—mass migration and communal massacres.',
+    ledTo: ['India/Pakistan wars over Kashmir', 'Congress/Gandhi legacy contested']
+  },
+  {
+    id: 'japan-postwar',
+    year: 1947,
+    yearLabel: '1947',
+    title: 'Japanese Empire dissolved',
+    region: 'Japan',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Allied occupation imposed demilitarization & democratic constitution.',
+    ledTo: ['Economic miracle export model', 'Article 9 debates today']
+  },
+  {
+    id: 'truman-doctrine',
+    year: 1947,
+    yearLabel: '1947',
+    title: 'Truman Doctrine',
+    region: 'United States',
+    unitId: 8,
+    examHighlight: true,
+    description: 'US pledged aid vs “armed minorities”—framed global containment vs communism.',
+    ledTo: ['Marshall Plan Europe', 'Interventions from Greece to Vietnam justified']
+  },
+  {
+    id: 'israel-palestine-conflict',
+    year: 1947,
+    yearLabel: '1947\u201348',
+    title: 'Palestine partition & war',
+    region: 'Middle East',
+    unitId: 8,
+    examHighlight: false,
+    description: 'UN partition plan sparked civil war—Israel declared statehood; Nakba displacement.',
+    ledTo: ['Recurring wars / occupation debates', 'Diaspora/refugee politics enduring']
+  },
+  {
+    id: 'who-founded',
+    year: 1948,
+    yearLabel: '1948',
+    title: 'WHO established',
+    region: 'Global',
+    unitId: 8,
+    examHighlight: false,
+    description: 'UN health agency targeting epidemics & later vaccination campaigns.',
+    ledTo: ['Smallpox eradication template', 'COVID-era sovereignty tensions']
+  },
+  {
+    id: 'cold-war',
+    year: 1947,
+    yearLabel: '1947\u20131991',
+    title: 'Cold War',
+    region: 'Global',
+    unitId: 8,
+    examHighlight: true,
+    description: 'US capitalism vs Soviet communism—proxy wars, nuclear brinkmanship, non-aligned movement.',
+    ledTo: ['Korea/Vietnam/Afghanistan devastation', 'Arms race spurred space & tech spillovers']
+  },
+  {
+    id: 'israel-founded',
+    year: 1948,
+    yearLabel: '1948',
+    title: 'State of Israel declared',
+    region: 'Middle East',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Independence war hardened borders—Palestinian refugee crisis.',
+    ledTo: ['Regional alliance shifts', 'US strategic partnership deepened']
+  },
+  {
+    id: 'berlin-blockade',
+    year: 1948,
+    yearLabel: '1948\u201349',
+    title: 'Berlin Blockade / Airlift',
+    region: 'Germany',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Stalin closed surface routes—Allies supplied West Berlin by air.',
+    ledTo: ['NATO consolidation', 'Two German states formalized']
+  },
+  {
+    id: 'nato',
+    year: 1949,
+    yearLabel: '1949',
+    title: 'NATO alliance',
+    region: 'North Atlantic',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Collective-defense pact binding US to Western Europe.',
+    ledTo: ['Warsaw Pact mirror alliance', ' Post-1991 enlargement debates']
+  },
+  {
+    id: 'korean-war',
+    year: 1950,
+    yearLabel: '1950\u20131953',
+    title: 'Korean War',
     region: 'East Asia',
     unitId: 8,
-    description: 'Mao Zedong\'s Communist Party defeated the US-backed Nationalist Party in China\'s civil war, establishing the People\'s Republic of China. The "loss" of China shocked the West and intensified Cold War fears.',
-    ledTo: [
-      'Korean War (1950\u201353) — China intervened to prevent US forces reaching its border',
-      'Great Leap Forward and Cultural Revolution caused tens of millions of deaths',
-      'Sino-Soviet split complicated Cold War alliances',
-      'China\'s eventual reform under Deng Xiaoping created the economic giant of today'
-    ]
+    examHighlight: false,
+    description: 'North invaded south—Chinese intervention stalemate along DMZ.',
+    ledTo: ['Permanent US bases peninsula', 'Armistice not treaty']
   },
   {
-    id: 'decolonization-africa',
-    year: 1957,
-    yearLabel: '1957\u20131975',
-    title: 'African Decolonization Wave',
-    region: 'Africa',
-    unitId: 8,
-    description: 'Ghana became the first sub-Saharan African country to gain independence (1957) under Kwame Nkrumah, who promoted Pan-Africanism. 1960 — "Year of Africa" — saw 17 countries gain independence. Algerian War of Independence from France (1954\u201362) was especially brutal.',
-    ledTo: [
-      'New African nations faced arbitrary colonial borders, ethnic tensions, and Cold War interference',
-      'Pan-African movement and Organization of African Unity (1963)',
-      'Continued struggle against apartheid in South Africa',
-      'Economic neo-colonialism replaced direct colonial rule for many'
-    ]
-  },
-  {
-    id: 'bandung-conference',
+    id: 'warsaw-pact',
     year: 1955,
     yearLabel: '1955',
-    title: 'Bandung Conference — Non-Aligned Movement',
-    region: 'Asia / Africa',
+    title: 'Warsaw Pact',
+    region: 'Eastern Europe',
     unitId: 8,
-    description: '29 Asian and African nations met in Bandung, Indonesia to assert independence from both Cold War blocs. Nehru (India), Nasser (Egypt), Sukarno (Indonesia), and Tito (Yugoslavia) led the Non-Aligned Movement, insisting that newly independent nations need not join either superpower\'s camp.',
-    ledTo: [
-      'Non-Aligned Movement gave developing nations a collective diplomatic voice',
-      'Third World became a political concept — nations outside the two blocs',
-      'Inspired calls for a New International Economic Order in the 1970s'
-    ]
+    examHighlight: false,
+    description: 'Soviet-led military bloc answering NATO.',
+    ledTo: ['Hungary 1956 invasion precedent', 'Dissolved 1991']
+  },
+  {
+    id: 'vietnam-war',
+    year: 1955,
+    yearLabel: '1955\u20131975',
+    title: 'Vietnam War',
+    region: 'Southeast Asia',
+    unitId: 8,
+    examHighlight: true,
+    description: 'US escalation feared domino theory—Ho Chi Minh’s DRV fought reunification.',
+    ledTo: ['American anti-war movement', 'Khmer Rouge spillover tragedies']
+  },
+  {
+    id: 'polio-vaccine',
+    year: 1955,
+    yearLabel: '1955',
+    title: 'Polio vaccine rollout',
+    region: 'Global',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Salk vaccine trials signaled mid-century public-health optimism.',
+    ledTo: ['WHO vaccination campaigns model', 'Debates on intellectual property vs access']
+  },
+  {
+    id: 'khrushchev-thaw',
+    year: 1956,
+    yearLabel: '1956',
+    title: 'Khrushchev denounces Stalin',
+    region: 'Soviet Union',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Secret speech began de-Stalinization—Hungary crushed when reforms went too far.',
+    ledTo: ['Sino-Soviet split widened', 'Dissident samizdat culture']
+  },
+  {
+    id: 'great-leap-forward',
+    year: 1958,
+    yearLabel: '1958\u20131962',
+    title: 'Great Leap Forward',
+    region: 'China',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Mao’s backyard furnaces & communes caused massive famine.',
+    ledTo: ['Mao partially sidelined prelude Cultural Revolution', 'Industrial planning recentralized']
+  },
+  {
+    id: 'cuban-revolution',
+    year: 1959,
+    yearLabel: '1953\u201359',
+    title: 'Cuban Revolution',
+    region: 'Caribbean',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Castro/guerrillas ousted Batista—declared socialist alignment.',
+    ledTo: ['Bay of Pigs & missile crisis', 'Latin American left inspiration']
+  },
+  {
+    id: 'military-industrial-complex',
+    year: 1961,
+    yearLabel: '1961',
+    title: 'Eisenhower’s military-industrial warning',
+    region: 'United States',
+    unitId: 8,
+    examHighlight: true,
+    description: 'Farewell address cautioned defense contractors distorting democracy.',
+    ledTo: ['Vietnam-era skepticism', ' perpetual defense budgeting debates']
+  },
+  {
+    id: 'bay-of-pigs',
+    year: 1961,
+    yearLabel: '1961',
+    title: 'Bay of Pigs invasion',
+    region: 'Cuba',
+    unitId: 8,
+    examHighlight: false,
+    description: 'CIA-backed exiles failed—inflamed Castro-Soviet ties.',
+    ledTo: ['Khrushchev placed missiles -> crisis', 'US covert ops scrutiny']
   },
   {
     id: 'cuban-missile-crisis',
     year: 1962,
     yearLabel: '1962',
     title: 'Cuban Missile Crisis',
-    region: 'Americas / Global',
+    region: 'Atlantic',
     unitId: 8,
-    description: 'The US discovered Soviet nuclear missiles being installed in Cuba. For 13 days the world stood on the brink of nuclear war. President Kennedy imposed a naval blockade; Soviet Premier Khrushchev agreed to remove missiles in exchange for a US pledge not to invade Cuba and secret removal of US missiles from Turkey.',
-    ledTo: [
-      'Nuclear hotline established between Washington and Moscow',
-      'Nuclear Test Ban Treaty (1963)',
-      'Both sides more cautious about direct confrontation',
-      'Vietnam War escalated partly because Kennedy/Johnson feared appearing weak'
-    ]
+    examHighlight: false,
+    description: 'US blockade vs Soviet nukes in Cuba—brink of nuclear exchange.',
+    ledTo: ['Hotline & partial test-ban', 'Mutual deterrence doctrines refined']
+  },
+  {
+    id: 'cultural-revolution',
+    year: 1966,
+    yearLabel: '1966\u201376',
+    title: 'Cultural Revolution',
+    region: 'China',
+    unitId: 8,
+    examHighlight: false,
+    description: 'Mao mobilized Red Guards vs “capitalist roaders”—schools shuttered, relics smashed.',
+    ledTo: ['Millions persecuted', ' Deng era reform backlash']
+  },
+  {
+    id: 'soviet-afghanistan',
+    year: 1979,
+    yearLabel: '1979\u201389',
+    title: 'Soviet war in Afghanistan',
+    region: 'Central Asia',
+    unitId: 8,
+    examHighlight: false,
+    description: 'USSR invaded to prop communist client—mujahedin resisted with foreign aid.',
+    ledTo: ['Taliban blowback post-1989', ' exacerbated USSR fiscal strain']
+  },
+  {
+    id: 'iranian-revolution',
+    year: 1979,
+    yearLabel: '1979',
+    title: 'Iranian Revolution',
+    region: 'Middle East',
+    unitId: 8,
+    examHighlight: true,
+    description: 'Mass protests ousted Shah—Ayatollahs built Islamic Republic reversing Pahlavi secularism.',
+    ledTo: ['Women’s rights rolled back under Sharia frameworks', 'US hostage crisis poisoned diplomacy']
+  },
+  {
+    id: 'tiananmen',
+    year: 1989,
+    yearLabel: '1989',
+    title: 'Tiananmen Square crackdown',
+    region: 'China',
+    unitId: 9,
+    examHighlight: false,
+    description: 'PLA cleared protesters demanding reforms—global condemnation.',
+    ledTo: ['Market authoritarianism without political pluralism', 'Hong Kong memory politics']
   },
   {
     id: 'berlin-wall-falls',
     year: 1989,
-    yearLabel: '1989\u20131991',
-    title: 'Berlin Wall Falls — Soviet Collapse',
-    region: 'Europe',
-    unitId: 8,
-    description: 'Gorbachev\'s reforms (glasnost and perestroika) destabilized the Soviet system. Eastern European satellite states broke free in 1989; the Berlin Wall fell November 9. German reunification followed in 1990. The Soviet Union itself dissolved in December 1991, ending the Cold War.',
-    ledTo: [
-      'US emerged as the sole superpower — "unipolar moment"',
-      'NATO expanded eastward toward Russia\'s borders',
-      'Russian resentment of post-Cold War settlement shaped later aggression (Georgia, Ukraine)',
-      'Globalization accelerated as former communist economies integrated into world markets'
-    ]
-  },
-  {
-    id: 'globalization-wto',
-    year: 1995,
-    yearLabel: '1990s\u20132000s',
-    title: 'Economic Globalization & the WTO',
-    region: 'Global',
+    yearLabel: '1989',
+    title: 'Fall of Berlin Wall',
+    region: 'Germany',
     unitId: 9,
-    description: 'The World Trade Organization (1995), NAFTA, and other free trade agreements reduced tariffs globally. Multinational corporations moved production to low-wage countries. Containerization made shipping cheap. The internet enabled global communication. China\'s integration into world markets after 1978 became the largest economic transformation in history.',
-    ledTo: [
-      'Hundreds of millions lifted from poverty in China and Southeast Asia',
-      'Deindustrialization in wealthy nations and growing inequality within them',
-      'Anti-globalization movement protested corporate power and inequality',
-      'North-South divide — wealthy vs. developing nations\' access to markets'
-    ]
+    examHighlight: false,
+    description: 'Popular pressure breached Iron Curtain symbol—peaceful revolution cascaded.',
+    ledTo: ['German reunification', 'NATO expansion negotiations controversy']
   },
   {
-    id: 'digital-revolution',
-    year: 2000,
-    yearLabel: 'c. 1990s\u20132010s',
-    title: 'Digital Revolution & the Internet Age',
-    region: 'Global',
+    id: 'ussr-collapse',
+    year: 1991,
+    yearLabel: '1991',
+    title: 'Soviet Union dissolves',
+    region: 'Eurasia',
     unitId: 9,
-    description: 'The internet, mobile phones, and social media transformed how billions of people communicate, access information, and organize politically. The digital revolution created new industries, accelerated globalization, and enabled both democratic movements (Arab Spring) and authoritarian surveillance.',
-    ledTo: [
-      'Information spreads globally in seconds, making censorship harder',
-      'Platform economies (Amazon, Alibaba) disrupted traditional trade and retail',
-      'Social media enabled political organizing — and disinformation at scale',
-      'Digital divide — unequal access to technology deepened global inequality'
-    ]
+    examHighlight: true,
+    description: 'August coup failure—republic secession recognized—Cold War ended.',
+    ledTo: [' Shock therapy economies', ' NATO/EU eastward enlargement']
   },
   {
-    id: 'climate-change',
+    id: 'gulf-war-1990',
     year: 1990,
-    yearLabel: 'c. 1990s\u2013present',
-    title: 'Climate Change Becomes a Global Crisis',
-    region: 'Global',
+    yearLabel: '1990\u201391',
+    title: 'Gulf Crisis & Desert Storm',
+    region: 'Middle East',
     unitId: 9,
-    description: 'Scientific consensus established that human industrial activity was warming the planet through greenhouse gas emissions. The Kyoto Protocol (1997) and Paris Agreement (2015) attempted international action. Rising sea levels, extreme weather, and ecosystem collapse threaten hundreds of millions.',
-    ledTo: [
-      'Mass migration driven by climate displacement',
-      'Resource conflicts over water and arable land',
-      'Green energy transition underway but insufficient to meet 1.5°C targets',
-      'Environmental justice movements highlight that the poorest suffer most'
-    ]
+    examHighlight: false,
+    description: 'Iraq invaded Kuwait—UN coalition liberated emirate while leaving Hussein in Baghdad.',
+    ledTo: ['Containment no-fly zones', 'Radical Islamist networks matured']
+  },
+  {
+    id: 'nafta',
+    year: 1994,
+    yearLabel: '1994',
+    title: 'NAFTA takes effect',
+    region: 'North America',
+    unitId: 9,
+    examHighlight: false,
+    description: 'Tariff cuts integrating Canada-US-Mexico supply chains.',
+    ledTo: ['Manufacturing shifts debates', ' USMCA successor tweaks']
+  },
+  {
+    id: '911-attacks',
+    year: 2001,
+    yearLabel: '2001',
+    title: 'September 11 attacks',
+    region: 'United States',
+    unitId: 9,
+    examHighlight: false,
+    description: 'Al-Qaeda hijackings destroyed WTC & damaged Pentagon—global war on terror declared.',
+    ledTo: ['Afghanistan invasion Taliban ousted', 'Iraq War WMD controversies']
+  },
+  {
+    id: 'iraq-war-2003',
+    year: 2003,
+    yearLabel: '2003',
+    title: 'US-led invasion of Iraq',
+    region: 'Middle East',
+    unitId: 9,
+    examHighlight: false,
+    description: 'Coalition toppled Hussein—insurgency & ISIS aftermath.',
+    ledTo: ['Fragile democratic experiments', 'Iranian regional influence rose']
   }
-
 ];
