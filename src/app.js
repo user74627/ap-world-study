@@ -790,8 +790,19 @@
     }).catch(function (err) {
       analyzeBtn.textContent = '\u25B6\u00A0 Analyze Gaps';
       analyzeBtn.disabled = false;
+      var msg = String(err.message || err);
       if (hint) {
-        hint.innerHTML = '<span style="color:var(--danger)">AI error: ' + escapeHtml(String(err.message || err)) + '</span>';
+        if (msg === 'rate-limited') {
+          hint.innerHTML =
+            '<span style="color:var(--warning)">' +
+            '\u26A0\uFE0F The free AI tier is temporarily busy (rate limited). ' +
+            'Wait 30\u201360 seconds, then ' +
+            '<button class="btn btn-sm btn-primary" onclick="document.getElementById(\'analyze-btn\').click()" ' +
+            'style="padding:2px 10px;font-size:12px;margin-left:4px">Try again</button>' +
+            '</span>';
+        } else {
+          hint.innerHTML = '<span style="color:var(--danger)">AI error: ' + escapeHtml(msg) + '</span>';
+        }
       }
     });
   }
