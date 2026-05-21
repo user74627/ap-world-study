@@ -398,8 +398,10 @@
       '<div class="score-label">/ 100</div>',
       '</div>',
       '<div class="results-summary">',
-      '<h3>Knowledge Gap Analysis</h3>',
-      '<p>' + escapeHtml(label) + '</p>',
+      '<h3>AI Knowledge Gap Analysis <span class="ai-provider-badge">DeepSeek via OpenRouter</span></h3>',
+      result.aiFeedback
+        ? '<p class="ai-feedback-text">' + escapeHtml(result.aiFeedback) + '</p>'
+        : '<p>' + escapeHtml(label) + '</p>',
       '<p style="margin-top:6px;font-size:12px;color:var(--text-3)">',
       covered + '/' + totalTop + ' topics &bull; ' + coveredT + '/' + totalTerm + ' terms',
       '</p>',
@@ -768,16 +770,29 @@
       return;
     }
 
-    analyzeBtn.textContent = 'Analyzing\u2026';
+    analyzeBtn.textContent = 'Analyzing with AI\u2026';
     analyzeBtn.disabled = true;
 
-    /* Short delay so the button state visually updates before blocking work */
-    setTimeout(function () {
-      State.pendingResult   = GapAnalyzer.analyze(unitId, transcript, notes);
-      State.savedTranscript = transcript;
-      State.savedNotes      = notes;
+    /* Show inline loading indicator below the button */
+    var hint = el('analyze-hint');
+    if (hint) {
+      hint.innerHTML = '<span class="ai-loading-msg"><span class="ai-spinner"></span>DeepSeek is reading your notes\u2026 usually takes 5\u201315 seconds.</span>';
+      hint.style.color = 'var(--text-2)';
+    }
+
+    State.savedTranscript = transcript;
+    State.savedNotes      = notes;
+
+    GapAnalyzer.analyze(unitId, transcript, notes).then(function (result) {
+      State.pendingResult = result;
       renderAll();
-    }, 150);
+    }).catch(function (err) {
+      analyzeBtn.textContent = '\u25B6\u00A0 Analyze Gaps';
+      analyzeBtn.disabled = false;
+      if (hint) {
+        hint.innerHTML = '<span style="color:var(--danger)">AI error: ' + escapeHtml(String(err.message || err)) + '</span>';
+      }
+    });
   }
 
   function handleSave() {
