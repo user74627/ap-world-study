@@ -1,179 +1,145 @@
 /* ================================================================
-   Browser Gap Analyzer
-   Free, offline gap analysis using keyword and term matching.
-
-   INTERFACE (implement this same shape for a future GeminiAnalyzer):
-     GapAnalyzer.analyze(unitId, transcript, notes) → result object
-     GapAnalyzer.providerName → string
+   AI Gap Analyzer — powered by OpenRouter (deepseek/deepseek-v3-base:free)
+   Public interface:
+     GapAnalyzer.analyze(unitId, transcript, notes) → Promise<result>
+     GapAnalyzer.providerName  → string
      GapAnalyzer.isAvailable() → boolean
 
-   Result shape:
-     {
-       score: 0–100,
-       coveredTopics: string[],
-       missedTopics: string[],
-       coveredTerms: string[],
-       missedTerms: string[],
-       hotKeywords: { word: string, count: number }[],
-       suggestedQuestions: string[]
-     }
+   Result shape (same as before so saved sessions stay compatible):
+   {
+     score: 0–100,
+     coveredTopics: string[],
+     missedTopics:  string[],
+     coveredTerms:  string[],
+     missedTerms:   string[],
+     hotKeywords:   [],          ← always empty for AI path
+     suggestedQuestions: string[],
+     aiFeedback:    string       ← rich markdown paragraph (new)
+   }
 ================================================================ */
 
 var GapAnalyzer = (function () {
 
-  var STOPWORDS = new Set([
-    'the','and','of','in','to','a','an','for','on','at','by','with','this',
-    'that','was','were','had','have','been','would','could','should','will',
-    'they','their','them','from','also','which','when','where','what','how',
-    'who','then','than','there','these','those','into','out','about','but',
-    'or','so','if','its','are','is','it','as','we','our','you','your','he',
-    'she','his','her','one','not','all','more','very','can','has','do','be',
-    'up','my','him','me','us','some','most','over','after','before','during',
-    'through','between','against','under','around','among','while','since',
-    'without','within','along','following','across','behind','beyond','plus',
-    'except','until','within','per','via','among','throughout','despite',
-    'many','much','such','each','every','both','few','little','own','other',
-    'same','any','just','even','back','well','way','only','because','been',
-    'here','down','now','however','make','made','take','took','use','used'
-  ]);
+  var OPENROUTER_MODEL = 'deepseek/deepseek-v3-base:free';
+  var API_URL          = 'https://openrouter.ai/api/v1/chat/completions';
 
-  /* Normalize text: lowercase, collapse whitespace */
-  function normalize(text) {
-    return (text || '').toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9'\s-]/g, ' ');
+  function getKey() {
+    try {
+      var s = JSON.parse(localStorage.getItem('apworld_settings') || '{}');
+      return s.openRouterKey || '';
+    } catch (e) { return ''; }
   }
 
-  /* Check whether any of a topic's keys appear in notes text */
-  function topicCovered(topic, notesNorm) {
-    return topic.keys.some(function (key) {
-      return notesNorm.includes(normalize(key));
-    });
+  /* ── Prompt builder ──────────────────────────────────────── */
+
+  function buildPrompt(unit, transcript, notes) {
+    var topicList  = unit.topics.map(function (t) { return '- ' + t.title; }).join('\n');
+    var termsList  = unit.terms.join(', ');
+
+    var transcriptSection = transcript.trim()
+      ? 'TRANSCRIPT (video review the student watched):\n"""\n' + transcript.slice(0, 6000) + '\n"""'
+      : '(No transcript provided — evaluate notes against the AP unit\'s expected content)';
+
+    return [
+      'You are an AP World History tutor grading a student\'s recall notes.',
+      '',
+      'UNIT: ' + unit.id + ' — ' + unit.title + ' (' + unit.dateRange + ')',
+      '',
+      'KEY TOPICS for this unit:',
+      topicList,
+      '',
+      'KEY TERMS for this unit:',
+      termsList,
+      '',
+      transcriptSection,
+      '',
+      'STUDENT\'S NOTES (written from memory — do not penalize for informal style):',
+      '"""',
+      notes.slice(0, 4000),
+      '"""',
+      '',
+      'Respond ONLY with a valid JSON object (no markdown fences, no extra text) with this exact shape:',
+      '{',
+      '  "score": <integer 0-100>,',
+      '  "coveredTopics": [<topic title strings that the student clearly addressed>],',
+      '  "missedTopics":  [<topic title strings the student missed or barely mentioned>],',
+      '  "coveredTerms":  [<key terms the student used correctly>],',
+      '  "missedTerms":   [<key terms the student did not mention>],',
+      '  "suggestedQuestions": [<3-5 targeted follow-up questions to close the gaps>],',
+      '  "aiFeedback": "<2-4 sentence encouraging paragraph: what they did well, what to focus on next, study tip>"',
+      '}'
+    ].join('\n');
   }
 
-  /* Check topics */
-  function checkTopics(unit, notesNorm) {
-    var covered = [], missed = [];
-    unit.topics.forEach(function (topic) {
-      if (topicCovered(topic, notesNorm)) {
-        covered.push(topic.title);
-      } else {
-        missed.push(topic.title);
-      }
-    });
-    return { covered: covered, missed: missed };
-  }
+  /* ── Main async analyze ─────────────────────────────────── */
 
-  /* Check key terms */
-  function checkTerms(unit, notesNorm) {
-    var covered = [], missed = [];
-    unit.terms.forEach(function (term) {
-      if (notesNorm.includes(normalize(term))) {
-        covered.push(term);
-      } else {
-        missed.push(term);
-      }
-    });
-    return { covered: covered, missed: missed };
-  }
+  async function analyze(unitId, transcript, notes) {
+    var unit = AP_UNITS.find(function (u) { return u.id === unitId; });
+    if (!unit) throw new Error('Unknown unit ' + unitId);
 
-  /* Extract words that appear frequently in transcript but are absent from notes */
-  function extractHotKeywords(transcriptNorm, notesNorm) {
-    var wordCount = {};
-    transcriptNorm.split(/\s+/).forEach(function (word) {
-      word = word.replace(/[^a-z']/g, '');
-      if (word.length > 3 && !STOPWORDS.has(word)) {
-        wordCount[word] = (wordCount[word] || 0) + 1;
-      }
-    });
-    return Object.entries(wordCount)
-      .filter(function (pair) {
-        return pair[1] >= 3 && !notesNorm.includes(pair[0]);
+    var key = getKey();
+    if (!key) throw new Error('No OpenRouter API key found. Go to Settings and paste your key.');
+
+    var prompt = buildPrompt(unit, transcript, notes);
+
+    var response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + key,
+        'Content-Type':  'application/json',
+        'HTTP-Referer':  'https://archishm.github.io/ap-world-study/',
+        'X-Title':       'AP World Study Tool'
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1200
       })
-      .sort(function (a, b) { return b[1] - a[1]; })
-      .slice(0, 12)
-      .map(function (pair) { return { word: pair[0], count: pair[1] }; });
-  }
-
-  /* Pick study questions based on what was missed */
-  function generateQuestions(unit, missedTopics, missedTerms) {
-    var questions = unit.questions ? unit.questions.slice() : [];
-
-    /* Insert targeted questions for top missed topics */
-    missedTopics.slice(0, 2).forEach(function (topic) {
-      questions.unshift('What were the key characteristics and significance of: ' + topic + '?');
     });
 
-    if (missedTerms.length > 0) {
-      questions.unshift(
-        'Define and explain the historical significance of: ' +
-        missedTerms.slice(0, 4).join(', ') + '.'
-      );
+    if (!response.ok) {
+      var errText = await response.text();
+      throw new Error('OpenRouter ' + response.status + ': ' + errText.slice(0, 200));
     }
 
-    return questions.slice(0, 6);
+    var data = await response.json();
+    var raw  = (data.choices[0].message.content || '').trim();
+
+    /* Strip accidental markdown fences the model sometimes adds */
+    raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '');
+
+    var result;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      /* Attempt partial recovery: find the first { ... } block */
+      var match = raw.match(/\{[\s\S]*\}/);
+      if (match) {
+        result = JSON.parse(match[0]);
+      } else {
+        throw new Error('AI returned unparseable response: ' + raw.slice(0, 300));
+      }
+    }
+
+    /* Normalise & guarantee all required fields */
+    return {
+      score:              Number(result.score)              || 0,
+      coveredTopics:      Array.isArray(result.coveredTopics) ? result.coveredTopics : [],
+      missedTopics:       Array.isArray(result.missedTopics)  ? result.missedTopics  : [],
+      coveredTerms:       Array.isArray(result.coveredTerms)  ? result.coveredTerms  : [],
+      missedTerms:        Array.isArray(result.missedTerms)   ? result.missedTerms   : [],
+      hotKeywords:        [],
+      suggestedQuestions: Array.isArray(result.suggestedQuestions) ? result.suggestedQuestions : [],
+      aiFeedback:         typeof result.aiFeedback === 'string' ? result.aiFeedback : ''
+    };
   }
 
   /* ── Public interface ─────────────────────────────────── */
   return {
-    providerName: 'Browser (offline)',
-
-    isAvailable: function () { return true; },
-
-    analyze: function (unitId, transcript, notes) {
-      var unit = AP_UNITS.find(function (u) { return u.id === unitId; });
-      if (!unit) return null;
-
-      var notesNorm = normalize(notes);
-      var transcriptNorm = normalize(transcript);
-
-      var topicResult = checkTopics(unit, notesNorm);
-      var termResult  = checkTerms(unit, notesNorm);
-      var hotKeywords = transcript.trim()
-        ? extractHotKeywords(transcriptNorm, notesNorm)
-        : [];
-
-      var topicPct = unit.topics.length
-        ? topicResult.covered.length / unit.topics.length
-        : 0;
-      var termPct  = unit.terms.length
-        ? termResult.covered.length / unit.terms.length
-        : 0;
-
-      /* Weighted score: topics 60%, terms 40% */
-      var score = Math.round((topicPct * 0.60 + termPct * 0.40) * 100);
-
-      /* Bonus: if no transcript, scale score to be forgiving */
-      if (!transcript.trim() && score === 0 && notes.trim().length > 50) {
-        score = Math.min(score + 5, 100);
-      }
-
-      var suggestedQuestions = generateQuestions(
-        unit, topicResult.missed, termResult.missed
-      );
-
-      return {
-        score:             score,
-        coveredTopics:     topicResult.covered,
-        missedTopics:      topicResult.missed,
-        coveredTerms:      termResult.covered,
-        missedTerms:       termResult.missed,
-        hotKeywords:       hotKeywords,
-        suggestedQuestions: suggestedQuestions
-      };
-    }
+    providerName: 'DeepSeek via OpenRouter',
+    isAvailable:  function () { return true; },
+    analyze:      analyze
   };
+
 })();
-
-/* ================================================================
-   Future: GeminiGapAnalyzer (same interface)
-
-   var GeminiGapAnalyzer = {
-     providerName: 'Gemini (AI)',
-     isAvailable: function() { return !!settings.geminiApiKey; },
-     analyze: async function(unitId, transcript, notes) {
-       // POST to Gemini API with transcript + notes, return same result shape
-     }
-   };
-
-   To switch providers, replace:
-     var GapAnalyzer = GeminiGapAnalyzer;
-================================================================ */
