@@ -678,7 +678,7 @@
       'placeholder="sk-or-v1-..." value="' + escapeHtml(settings.openRouterKey || '') + '">',
       '</div>',
       '<div style="font-size:12px;color:var(--text-3);margin-top:-4px;padding-bottom:8px">',
-      'Model: <code>deepseek/deepseek-v3-base:free</code> (free tier via <a href="https://openrouter.ai" target="_blank" style="color:var(--accent)">openrouter.ai</a>)',
+      'Model: <code>deepseek/deepseek-v4-flash:free</code> (free tier via <a href="https://openrouter.ai" target="_blank" style="color:var(--accent)">openrouter.ai</a>)',
       '</div>',
       '<div><button class="btn btn-primary btn-sm" id="save-settings-btn">Save Preferences</button></div>',
       '</div></div>',
