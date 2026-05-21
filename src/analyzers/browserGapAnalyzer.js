@@ -1,5 +1,5 @@
 /* ================================================================
-   AI Gap Analyzer — powered by OpenRouter (deepseek/deepseek-v3-base:free)
+   AI Gap Analyzer — powered by OpenRouter (deepseek/deepseek-v4-flash:free)
    Public interface:
      GapAnalyzer.analyze(unitId, transcript, notes) → Promise<result>
      GapAnalyzer.providerName  → string
@@ -20,7 +20,7 @@
 
 var GapAnalyzer = (function () {
 
-  var OPENROUTER_MODEL = 'deepseek/deepseek-v3-base:free';
+  var OPENROUTER_MODEL = 'deepseek/deepseek-v4-flash:free';
   var API_URL          = 'https://openrouter.ai/api/v1/chat/completions';
 
   function getKey() {
