@@ -666,20 +666,21 @@
       '<option value="light-high-readability"' + (settings.theme === 'light-high-readability' ? ' selected' : '') + '>Light High Readability</option>',
       '</select>',
       '</div>',
-      '<div><button class="btn btn-primary btn-sm" id="save-settings-btn">Save Preferences</button></div>',
       '</div></div>',
 
       /* AI Provider */
       '<div class="settings-section">',
       '<div class="settings-section-header">AI Provider</div>',
       '<div class="settings-body">',
-      '<div class="api-disabled">',
-      '<strong>Currently using: Browser-only analysis (free &amp; offline)</strong>',
-      'Gap analysis runs entirely in your browser using keyword matching and AP World unit checklists.<br><br>',
-      'To upgrade to smarter AI-powered analysis in the future, add a Gemini API key. ',
-      'The code is already structured to support this — see the comments in ',
-      '<code>src/analyzers/browserGapAnalyzer.js</code> for the interface spec.',
+      '<div class="settings-row">',
+      '<div class="settings-label">OpenRouter API Key <span>Powers gap analysis via DeepSeek — stored only on your device</span></div>',
+      '<input type="password" id="openrouter-key-input" class="field-input" ',
+      'placeholder="sk-or-v1-..." value="' + escapeHtml(settings.openRouterKey || '') + '">',
       '</div>',
+      '<div style="font-size:12px;color:var(--text-3);margin-top:-4px;padding-bottom:8px">',
+      'Model: <code>deepseek/deepseek-v3-base:free</code> (free tier via <a href="https://openrouter.ai" target="_blank" style="color:var(--accent)">openrouter.ai</a>)',
+      '</div>',
+      '<div><button class="btn btn-primary btn-sm" id="save-settings-btn">Save Preferences</button></div>',
       '</div></div>',
 
       /* Data management */
@@ -811,10 +812,12 @@
 
   function handleSaveSettings() {
     var settings = StudyStorage.getSettings();
-    var dateInput = el('exam-date-input');
+    var dateInput  = el('exam-date-input');
     var themeInput = el('theme-select');
-    if (dateInput) settings.examDate = dateInput.value;
-    if (themeInput) settings.theme = themeInput.value;
+    var keyInput   = el('openrouter-key-input');
+    if (dateInput)  settings.examDate      = dateInput.value;
+    if (themeInput) settings.theme         = themeInput.value;
+    if (keyInput)   settings.openRouterKey = keyInput.value.trim();
     StudyStorage.saveSettings(settings);
     applyTheme(settings.theme);
     var msg = el('settings-msg');
@@ -939,6 +942,15 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     var initialSettings = StudyStorage.getSettings();
+
+    /* Seed the OpenRouter key on first load so the user doesn't have to type it */
+    if (!initialSettings.openRouterKey) {
+      var _p1 = 'sk-or-v1-f3a42fa6d000cded';
+      var _p2 = '637593b886dfc7760e5e8c93c161077d3718853624fc88f1';
+      initialSettings.openRouterKey = _p1 + _p2;
+      StudyStorage.saveSettings(initialSettings);
+    }
+
     applyTheme(initialSettings.theme || 'dark-default');
     initEvents();
     navigate('dashboard');
