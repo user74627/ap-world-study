@@ -118,8 +118,7 @@ var StudyStorage = (function () {
       return _read(SETTINGS_KEY, {
         examDate: '',
         theme: 'dark-default',
-        aiProvider: 'browser', // 'browser' | 'gemini' (future)
-        geminiApiKey: ''
+        openRouterKey: ''
       });
     },
 
