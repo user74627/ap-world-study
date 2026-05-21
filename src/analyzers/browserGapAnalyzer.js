@@ -71,7 +71,13 @@ var GapAnalyzer = (function () {
     ].join('\n');
   }
 
-  /* ── Main async analyze ─────────────────────────────────── */
+  /* ── Retry helper ───────────────────────────────────────── */
+
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  /* ── Main async analyze (auto-retry on 429) ─────────────── */
 
   async function analyze(unitId, transcript, notes) {
     var unit = AP_UNITS.find(function (u) { return u.id === unitId; });
@@ -80,23 +86,45 @@ var GapAnalyzer = (function () {
     var key = getKey();
     if (!key) throw new Error('No OpenRouter API key found. Go to Settings and paste your key.');
 
-    var prompt = buildPrompt(unit, transcript, notes);
-
-    var response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + key,
-        'Content-Type':  'application/json',
-        'HTTP-Referer':  'https://archishm.github.io/ap-world-study/',
-        'X-Title':       'AP World Study Tool'
-      },
-      body: JSON.stringify({
-        model: OPENROUTER_MODEL,
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-        max_tokens: 1200
-      })
+    var prompt   = buildPrompt(unit, transcript, notes);
+    var body     = JSON.stringify({
+      model: OPENROUTER_MODEL,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3,
+      max_tokens: 1200
     });
+    var headers  = {
+      'Authorization': 'Bearer ' + key,
+      'Content-Type':  'application/json',
+      'HTTP-Referer':  'https://archishm.github.io/ap-world-study/',
+      'X-Title':       'AP World Study Tool'
+    };
+
+    /* Up to 4 attempts: waits 5 s, 10 s, 20 s between retries */
+    var delays = [5000, 10000, 20000];
+    var response;
+    for (var attempt = 0; attempt <= delays.length; attempt++) {
+      response = await fetch(API_URL, { method: 'POST', headers: headers, body: body });
+
+      if (response.status === 429) {
+        if (attempt < delays.length) {
+          /* Update the hint text so the user sees progress */
+          var hint = document.getElementById('analyze-hint');
+          var wait = delays[attempt] / 1000;
+          if (hint) {
+            hint.innerHTML =
+              '<span class="ai-loading-msg"><span class="ai-spinner"></span>' +
+              'Free tier is busy \u2014 retrying in ' + wait + 's (attempt ' + (attempt + 2) + ' of 4)\u2026</span>';
+          }
+          await sleep(delays[attempt]);
+          continue;
+        }
+        /* All retries exhausted */
+        throw new Error('rate-limited');
+      }
+
+      break; /* non-429 response — continue below */
+    }
 
     if (!response.ok) {
       var errText = await response.text();
