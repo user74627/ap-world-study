@@ -96,7 +96,7 @@ var GapAnalyzer = (function () {
     var headers  = {
       'Authorization': 'Bearer ' + key,
       'Content-Type':  'application/json',
-      'HTTP-Referer':  'https://archishm.github.io/ap-world-study/',
+      'HTTP-Referer':  'https://user74627.github.io/ap-world-study/',
       'X-Title':       'AP World Study Tool'
     };
 
